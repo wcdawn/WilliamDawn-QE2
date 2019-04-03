@@ -1,0 +1,30 @@
+**.pdf
+
+! generic auxiliary files
+**.aux
+**.log
+**.out
+**.toc
+
+! glossary files
+**.gls
+**.glg
+**.glo
+
+! bibliographies
+**.bbl
+**.bcf
+**.blg
+
+! this always appears somehow
+**.run.xml
+
+! i think these are acronyms
+**.acn
+**.acr
+**.alg
+
+! not sure
+**.ist
+**.nav
+**.snm
