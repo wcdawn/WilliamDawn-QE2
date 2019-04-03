@@ -1,0 +1,114 @@
+\pdfminorversion=7
+\documentclass[
+  10pt,
+  hyperref={pdfauthor={William Christopher Dawn},
+  pdftitle={Fast Reactor with FEM Multiphysics},
+  pdfcreator={pdftex},
+  pdfsubject={NC State Defense},
+  pdfkeywords={nuclear, sodium, fast, reactor, nuclear reactor, 
+    finite element, multiphysics},}
+]{beamer}
+%\documentclass[handout,12pt]{beamer} % includes notes
+\usetheme{NCSU}
+
+% fix conflict between beamer and subfig
+\makeatletter
+\let\@@magyar@captionfix\relax
+\makeatother
+
+% set font Times New Roman
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{amsmath,amsfonts,amssymb}
+
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\small}
+
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[
+			style=alphabetic,%numeric-comp,%authoryear-comp,%
+			sorting=nyt,%ynt					
+			hyperref=true, %	
+			giveninits=true,%
+			backend=biber,
+      bibencoding=utf8,
+			natbib=true,
+			url=false,
+			isbn=false,
+			maxnames=2, %for et al to be used
+			maxalphanames=1, %to avoid printing a + for every et al in abbreviation
+			doi=false,
+]{biblatex}		
+\addbibresource{../WilliamDawn-QE2.bib}
+\renewcommand*{\labelalphaothers}{}
+\renewcommand*{\bibfont}{\scriptsize}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\usepackage{booktabs}
+
+% demand a table of contents for each current section
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\usepackage[acronym]{glossaries}
+\usepackage{acronym}
+\input{../acronym}
+\glstocfalse
+\renewcommand{\glossarysection}[2][]{}
+
+
+% Information to be included in the title page:
+\title[Ph.D. QE2]
+  {A Review and Critique of \textit{Jacobian-Free Newton-Krylov Nodal
+    Expansion Methods with Physics-Based Preconditioner and Local Elimination
+    for Three-Dimensional and Multigroup k-Eigenvalue Problems}}
+\author{William Christopher Dawn}
+\institute{
+  Nuclear Engineering Department \\
+  North Carolina State University \\
+  Raleigh, NC \\
+  \underline{\href{mailto:wcdawn@ncsu.edu}{wcdawn@ncsu.edu}}
+}
+\date{May 3, 2019}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Table of Contents}
+  \tableofcontents
+\end{frame}
+
+\begin{frame}{Thank You!}
+  Thank you all for coming this morning!\\
+  \vspace{0.5in}
+  I would like to thank my advisor, Dr. Scott Palmtag, and my committee, Dr. J.
+  Michael Doster and Dr. Ralph Smith.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+  \printbibliography[heading=none]
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Acronyms}
+  % this width could potentially allow text to flow off the page... 
+  % but just don't do that...
+  \setlength{\glsdescwidth}{0.8\textwidth}
+  \setglossarystyle{long}
+  \renewcommand{\glsnamefont}[1]{\textbf{#1}}
+  \renewcommand{\glsgroupskip}{}
+  \printglossary[type=\acronymtype,nonumberlist]
+\end{frame}
+
+\end{document}
