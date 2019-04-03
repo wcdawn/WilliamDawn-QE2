@@ -1,0 +1,115 @@
+\pdfminorversion=7
+\documentclass[11pt,titlepage]{article}
+\usepackage[margin=1in]{geometry}
+
+% use onehalfspacing
+\usepackage[onehalfspacing]{setspace}
+\onehalfspacing
+
+% set font Times New Roman
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{amsmath,amsfonts,amssymb}
+
+\usepackage[
+  pdfauthor={William Christopher Dawn},
+  pdftitle={PhD QE2 Review and Critique},
+  pdfcreator={pdflatex},
+  pdfsubject={NCSU Nuclear Engineering PhD Qualifying Exam Part 2},
+  pdfkeywords={Jacobi-free Newton-Krylov, nodal expansion method, physics-based
+    preconditioner, nuclear reactor analysis},
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  filecolor=black,
+  urlcolor=black,
+]{hyperref}
+
+\usepackage[
+  open=false,
+  openlevel=0,
+  atend,
+  numbered,
+]{bookmark}
+
+
+% setup glossary
+\usepackage[acronym]{glossaries}
+\usepackage{acronym}
+\input{acronym}
+% setup alignment of glossary printing
+% this width could potentially allow text to flow off the page... 
+% but just don't do that...
+\setlength{\glsdescwidth}{\textwidth}
+\setglossarystyle{long}
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+\renewcommand{\glsgroupskip}{}
+
+% setup bibliography
+\usepackage[american]{babel} % periods inside quotations in citations
+\usepackage{csquotes} % required by babel
+\usepackage[
+			style=alphabetic,%numeric-comp,%authoryear-comp,%
+			sorting=nyt,%ynt					
+			hyperref=true, %	
+			giveninits=true,%
+			backend=biber,
+      bibencoding=utf8,%
+			natbib=true,
+			url=false,
+			isbn=false,
+			maxnames=2, %for et al to be used
+			maxalphanames=1, %to avoid printing a + for every et al in abbreviation
+			doi=false
+]{biblatex}		
+\addbibresource{WilliamDawn-QE2.bib}
+
+\usepackage{booktabs}
+
+% title information
+\title{A Review and Critique of \textit{Jacobian-Free Newton-Krylov Nodal
+Expansion Methods with Physics-Based Preconditioner and Local Elimination for
+Three-Dimensional and Multigroup k-Eigenvalue Problems}}
+\author{William Christopher Dawn}
+\date{May 3, 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  My Abstract.
+\end{abstract}
+
+\section{Acronym Practice}
+  \gls{jfnk} and \gls{nem}.
+
+  \gls{jfnk} and \gls{nem}.
+
+  My cite \cite{qe2paper}.
+
+\section{Introduction}
+\label{sec:introduction}
+
+\section{Summary}
+\label{sec:summary}
+
+\section{Critique}
+\label{sec:critique}
+
+\section{Conclusions and Implications}
+\label{sec:conclusions_implications}
+
+% bibliography somehow
+\clearpage
+\printbibliography
+
+% make a glossary
+\clearpage
+\printglossary[type=\acronymtype,nonumberlist]
+\addcontentsline{toc}{chapter}{Acronyms}
+\glsresetall
+
+\end{document}
