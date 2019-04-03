@@ -1,24 +1,26 @@
 # Makefile
-DEFENSE=WilliamDawn-QE2-presentation
+PRESENTATION=WilliamDawn-QE2-presentation
+INTERMEDIATES=*.aux *.log *.out *.toc *.gls *.glg *.glo *.bbl *.bcf *.blg \
+			  *.run.xml *.acn *.acr *.alg *.ist *.nav *.snm
 
-.PHONY : all defense
+.PHONY : all presentation
 
-all : defense
+all : presentation
 
-defense : $(DEFENSE).pdf
+presentation : $(PRESENTATION).pdf
 
-$(DEFENSE).pdf : $(DEFENSE).tex beamerthemeNCSU.sty\
+$(PRESENTATION).pdf : $(PRESENTATION).tex beamerthemeNCSU.sty\
 	../WilliamDawn-QE2.bib
-	pdflatex --draftmode --shell-escape $(DEFENSE)
-	biber $(DEFENSE)
-	makeglossaries $(DEFENSE)
-	pdflatex --draftmode --shell-escape $(DEFENSE)
-	pdflatex --shell-escape $(DEFENSE)
-	grep -i "Warn" $(DEFENSE).log
+	pdflatex --draftmode --shell-escape $(PRESENTATION)
+	biber $(PRESENTATION)
+	makeglossaries $(PRESENTATION)
+	pdflatex --draftmode --shell-escape $(PRESENTATION)
+	pdflatex --shell-escape $(PRESENTATION)
+	grep -i "Warn" $(PRESENTATION).log
 
-forcedefense :
-	rm $(DEFENSE).pdf
-	$(MAKE) defense
+forcepresentation :
+	rm $(PRESENTATION).pdf
+	$(MAKE) presentation
 
 clean : 
-	rm $(DEFENSE_AUX) $(DEFENSE_INTERMEDIATES)
+	rm $(PRESENTATION_INTERMEDIATES)
