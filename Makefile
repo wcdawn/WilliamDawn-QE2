@@ -1,5 +1,7 @@
 # Makefile
 NAME=WilliamDawn-QE2
+SECTIONS=sec*/sec*.tex
+EXTRAS=variable_definitions.tex acronym.tex abstract.tex
 INTERMEDIATES=*.aux *.log *.out *.toc *.gls *.glg *.glo *.bbl *.bcf *.blg \
 			  *.run.xml *.acn *.acr *.alg *.ist *.nav *.snm
 
@@ -9,7 +11,7 @@ all : text presentation
 
 text : $(NAME).pdf
 
-$(NAME).pdf : $(NAME).tex $(NAME).bib
+$(NAME).pdf : $(NAME).tex $(NAME).bib $(SECTIONS) $(EXTRAS)
 	pdflatex --draftmode $(NAME)
 	biber $(NAME)
 	makeglossaries $(NAME)
