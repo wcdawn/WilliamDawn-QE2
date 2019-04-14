@@ -1,12 +1,14 @@
 \pdfminorversion=7
 \documentclass[
   10pt,
-  hyperref={pdfauthor={William Christopher Dawn},
-  pdftitle={Fast Reactor with FEM Multiphysics},
-  pdfcreator={pdftex},
-  pdfsubject={NC State Defense},
-  pdfkeywords={nuclear, sodium, fast, reactor, nuclear reactor, 
-    finite element, multiphysics},}
+  hyperref={
+    pdfauthor={William C. Dawn},
+    pdftitle={PhD QE2 Review and Critique},
+    pdfcreator={pdflatex},
+    pdfsubject={NCSU Nuclear Engineering PhD Qualifying Exam Part 2},
+    pdfkeywords={Jacobi-free Newton-Krylov, nodal expansion method, physics-based
+      preconditioner, nuclear reactor analysis},
+  }
 ]{beamer}
 %\documentclass[handout,12pt]{beamer} % includes notes
 \usetheme{NCSU}
@@ -66,11 +68,11 @@
 
 
 % Information to be included in the title page:
-\title[Ph.D. QE2]
+\title[Ph.D. Qualifying Exam Part 2]
   {A Review and Critique of \textit{Jacobian-Free Newton-Krylov Nodal
     Expansion Methods with Physics-Based Preconditioner and Local Elimination
     for Three-Dimensional and Multigroup k-Eigenvalue Problems}}
-\author{William Christopher Dawn}
+\author{William C. Dawn}
 \institute{
   Nuclear Engineering Department \\
   North Carolina State University \\
@@ -90,11 +92,13 @@
   \tableofcontents
 \end{frame}
 
+\include{sec_introduction}
+\include{sec_summary}
+\include{sec_critique}
+\include{sec_conclusion}
+
 \begin{frame}{Thank You!}
-  Thank you all for coming this morning!\\
-  \vspace{0.5in}
-  I would like to thank my advisor, Dr. Scott Palmtag, and my committee, Dr. J.
-  Michael Doster and Dr. Ralph Smith.
+  Thank you all for coming this morning!
 \end{frame}
 
 \begin{frame}[allowframebreaks]{References}
