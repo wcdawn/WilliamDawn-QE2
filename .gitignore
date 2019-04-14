@@ -29,3 +29,6 @@
 **.ist
 **.nav
 **.snm
+
+! ignore vim swap files
+**.*.swp
