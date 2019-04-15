@@ -1,8 +1,8 @@
 \section{Summary and Background}
 \label{sec:summary}
 
-  A brief summary of \citetitle{qe2paper} follows. Commentary on the methods
-  presented is included as applicable.
+  A brief summary of \citetitle{qe2paper} follows. Supporting information and 
+  commentary on the methods presented is included as applicable.
 
   \subsection{Multigroup Neutron Diffusion and \glsentrylong{nem}}
 
@@ -164,7 +164,8 @@
       approximately five \glspl{pi} provided the fastest convergence of the
       Newton iterations. The incomplete Cholesky preconditioner provided similar
       convergence rate but requires additional and expensive matrix
-      calculations.
+      calculations. A \gls{pi} preconditioner was also investigated in work by
+      \citeauthor{jfnk_wielandt} and similar performance was reported.
 
       The use of a \gls{pi} preconditioner was not investigated by
       \citeauthor{qe2paper}. Instead, the authors design a new
@@ -178,8 +179,8 @@
       contributions. The construction of the preconditioner appears to be 
       computationally expensive. Unfortunately, \citeauthor{qe2paper} do not
       compare their preconditioner to any other preconditioner or even a case
-      without a preconditioner, so it is impossible to determine the relative
-      computational efficiency of this preconditioning method.
+      without a preconditioner. Therefore, it is impossible to determine the
+      relative computational efficiency of this preconditioning method.
 
   \subsection{\glsentrylong{jfnk} Theory and Inexact Newton Condition}
 
@@ -204,13 +205,11 @@
       \vx^{m+1} = \vx^{m} + \step^{m}.
     \end{equation}
 
-    It has been demonstrated that, for proper choice of residual function, an
-    analytic Jacobian can be constructed simply \cite{gill_azmy}. However, for
-    the choice of residual function made by \citeauthor{qe2paper}, an analytic
-    Jacobian is not simple to compute. Therefore, a finite difference
+    For the choice of residual function made by \citeauthor{qe2paper}, an 
+    analytic Jacobian is not simple to compute. Therefore, a finite difference
     approximation is used to estimate the Jacobian. In fact, the Jacobian itself
     is not needed as the Newton step in \eref{eq:newton_step} will be solved
-    with a Krylov method. All that is needed is the finite difference 
+    with a Krylov method. All that is needed is the finite difference
     Jacobian-vector product which is equivalent to a directional derivative. The
     directional derivative can be written
     \begin{equation}
@@ -280,9 +279,9 @@
       typical reactor simulations, $d > 0.9$ and often $d > 0.95$ implying
       convergence is slow, often requiring hundreds of iterations.
 
-      The typical approach to address the challenge of large dominance ratio is
+      The typical approach to address the challenge of large dominance ratios is
       the \gls{ws} \cite{gehinThesis}. Briefly, the \gls{ws} subtracts a portion
-      of the fission source from both sides of the equation.  It can be shown
+      of the fission source from both sides of the equation. It can be shown
       that the dominance ratio is decreased \textit{significantly} such that $d
       \approx 0.5$ may be expected. It is common for the \gls{ws} to speedup 
       the solution \gls{pi} method by a factor of three or more. This will be
