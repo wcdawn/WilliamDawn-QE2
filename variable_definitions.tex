@@ -1,10 +1,12 @@
-\usepackage{xspace}
-
 % linear algebra
 \renewcommand{\epsilon}{\varepsilon} % use the pretty epsilon
 
-% variable definitions
-\newcommand{\keff}{\ensuremath{k_{\!\mbox{\scriptsize \em eff}}}\xspace}
+% vectors
+\newcommand{\vr}{\mathbf{r}}
+\newcommand{\vv}{\mathbf{v}}
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vzero}{\mathbf{0}}
+\newcommand{\vPhi}{\mathbf{\Phi}}
 
 % general macros
 \newcommand{\units}[1]{\ensuremath{\left[\text{{#1}}\right]}}
@@ -18,3 +20,19 @@
 \newcommand{\chref}[1]{\hyperref[#1]{Chapter~}\ref{#1}}
 \newcommand{\apref}[1]{\hyperref[#1]{Appendix~}\ref{#1}}
 \newcommand{\algorithmref}[1]{\hyperref[#1]{Algorithm~}\ref{#1}}
+
+% math variables
+\newcommand{\grad}{\nabla}
+\newcommand{\current}{\mathbf{J}}
+\newcommand{\dtilde}{\widetilde{D}}
+
+% jfnk variables
+\newcommand{\jacobian}{\mathbf{Ja}}
+\newcommand{\step}{\delta\vx}
+\newcommand{\residual}{\mathbf{R}}
+
+\usepackage{array}
+\newcolumntype{L}{>{$}l<{$}}
+\newenvironment{conditions}
+  {\vspace{0.5\baselineskip}\par\noindent\begin{tabular}{L @{${}={}$}
+  l}}{\end{tabular}\vspace{0.5\baselineskip}\\}
