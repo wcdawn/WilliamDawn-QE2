@@ -1,3 +1,83 @@
 \section{Critique}
 \label{sec:critique}
+  The primary motivation for this paper is to critique the article by
+  \citeauthor{qe2paper}. While there may be more to critique, the discussion
+  here focuses on the application of proposed the \gls{jfnk} to realistic
+  reactor simulation problems.
+
+  \subsection{Verification and Validation}
+    Had the authors provided additional results, the implications of the
+    publication may be more significant. However, important data has not been
+    reported by the authors. To demonstrate the implementation of their method,
+    the authors compare their converged eigenvalue and scalar flux distribution 
+    to a single benchmark problem: the \gls{iaea} 3D \gls{pwr} problem. While
+    results are presented for a second pebble bed reactor, these results have
+    not been previously verified so the authors verify against a similar version
+    of the same code. The authors do not demonstrate the spatial convergence
+    order of their method. Typically spatial convergence is demonstrate with the
+    solution to an analytic problem. Additionally, $\lambda$ is not directly
+    related to the norm of the residual $\| \residual (\vx^m) \|$ so no
+    conclusion can be made regarding the behavior of $\lambda$ during the
+    \gls{jfnk} iterations \cite{caslJFNK}.
+
+  \subsection{Critical Boron Concentration Search}
+    For the simulation of \glspl{pwr}, one is typically not interested in the
+    value of $\lambda$. Instead, the critical boron concentration, $B$, is
+    desired such that $\lambda=1.0$. While this may be a simple feature, the
+    authors have not demonstrated the ability of this new method to solve for
+    the critical boron concentration. In similar studies, the calculation of a
+    critical boron concentration has been performed using a \gls{jfnk}-like
+    method but it required special tuning and consideration \cite{caslJFNK}. The
+    typical method for calculating the critical boron concentration is related
+    to the Power Iteration method. As the \gls{jfnk} method presented by
+    \citeauthor{qe2paper} will have different convergence behavior and require a
+    different number of outer iterations the standard calculation technique may
+    not be applicable.
+
+  \subsection{\texorpdfstring{$\dtilde$ Formulation}{D~ Formulation}}
+    \label{sec:dtilde_formulation}
+    A potentially significant problem of the \gls{jfnk} solution method 
+    presented by \citeauthor{qe2paper} is the solution method of the \gls{nem}
+    coefficients. Typically, the \gls{nem} coefficients, $a_{g,u,n}$, are not
+    solved directly and, instead, a $\dtilde$ term is calculated. Consider two
+    neighboring nodes. Then, using the $\gls{nem}$ coefficients, the current
+    across the dividing surface, $\current_g(u)$, can be calculated and a
+    $\dtilde$ can be calculated as
+    \begin{equation}
+      \label{eq:dtilde}
+      \current_g(u) = 
+        -2 \left( \frac{h_{\ell+1}}{\overline{D}_{g,\ell+1}} + 
+          \frac{h_{\ell}}{\overline{D}_{g,\ell}} \right)^{-1}
+          \left( \overline{\phi}_{g,u,\ell+1} -
+          \overline{\phi}_{g,u,\ell} \right) + 
+        \dtilde_{g,u} \left( \overline{\phi}_{g,u,\ell+1} +
+          \overline{\phi}_{g,u,\ell} \right)
+    \end{equation}
+    where $\current_g(u)$ is the current on the edge between cells $\ell$ and
+    $\ell+1$, $\overline{\phi}_{g,u,\ell}$ is the node average scalar flux in
+    node $\ell$, and $\dtilde$ is dimensionless. $\dtilde$ is now unique to a
+    particular node surface and must be solved during every outer iteration as a
+    non-linear calculation. The implementation of $\dtilde$ as in
+    \eref{eq:dtilde} has been demonstrated previously \cite{palmtagThesis}.
+
+    Calculation of $\dtilde$ has several benefits compared to directly solving
+    the \gls{nem} coefficients. Originally, the form of \eref{eq:dtilde} and the
+    nonlinear iteration method was proposed by \citeauthor{smith_nonlinear} to
+    save on storage. In the nonlinear iteration method, the \gls{nem}
+    coefficients need not be stored.
+
+    When using the $\dtilde$ formulation, the linear system of equations solved
+    is simply the finite difference equations for the multigroup neutron
+    diffusion equation and $\dtilde$ acts as an addition term to each matrix
+    element. This has profound implications for the efficient solution of the
+    multigroup neutron diffusion equation.
+
+
+    % matrix sparsity
+    % requires a relatively expensive BICGSTAB or GMRES solve
+
+  \subsection{Comparison to Production-Quality Computer Programs}
+    % Ragged core
+    % Wielandt Shift
+    % Language optimization
 
