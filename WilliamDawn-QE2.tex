@@ -51,7 +51,7 @@
 \usepackage[american]{babel} % periods inside quotations in citations
 \usepackage{csquotes} % required by babel
 \usepackage[
-			style=alphabetic,%numeric-comp,%authoryear-comp,%
+			style=alphabetic,%
 			sorting=nyt,%ynt					
 			hyperref=true, %	
 			giveninits=true,%
@@ -60,7 +60,7 @@
 			natbib=true,
 			url=false,
 			isbn=false,
-			maxnames=2, %for et al to be used
+			%maxnames=2, %for et al to be used
 			maxalphanames=1, %to avoid printing a + for every et al in abbreviation
 			doi=false
 ]{biblatex}		
@@ -68,20 +68,29 @@
 
 \usepackage{booktabs}
 
+\input{variable_definitions}
+
 % title information
-\title{A Review and Critique of \textit{Jacobian-Free Newton-Krylov Nodal
-Expansion Methods with Physics-Based Preconditioner and Local Elimination for
-Three-Dimensional and Multigroup k-Eigenvalue Problems}}
+\title{A Review and Critique of \texorpdfstring{\citetitle{qe2paper}}{
+  Jacobian-Free Newton-Krylov Nodal Expansion Methods with Physics-Based
+  Preconditioner and Local Elimination for Three-Dimensional and Multigroup
+  k-Eigenvalue Problems}}
 \author{William C. Dawn}
 \date{May 3, 2019}
 
 \begin{document}
+
+% disable hyperref page numbers to suppress repeated page number warning
+\hypersetup{pageanchor=false}
 
 \maketitle
 
 % \include starts on new page \input just dumps
 
 \include{abstract}
+
+% enable hyperref page numbers for the remainder of the document
+\hypersetup{pageanchor=true}
 
 \input{./sec_introduction/sec_introduction}
 \input{./sec_summary/sec_summary}
