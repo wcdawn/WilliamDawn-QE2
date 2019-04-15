@@ -70,11 +70,26 @@
     is simply the finite difference equations for the multigroup neutron
     diffusion equation and $\dtilde$ acts as an addition term to each matrix
     element. This has profound implications for the efficient solution of the
-    multigroup neutron diffusion equation.
+    multigroup neutron diffusion equation. The sparsity pattern of the matrix in
+    the work by \citeauthor{qe2paper} has been shown to have irregular structure
+    \cite{palmtagThesis}. Therefore, the Krylov solver must be applicable for
+    general matrices and the authors investigate \gls{bicgstab} and \gls{gmres}
+    solvers. However, if the $\dtilde$ formulation is used and each energy group
+    is solved individually, a much more efficient \gls{cg} solver can be used
+    because the matrix will be \gls{spd}. Additionally, solving each group
+    individually is more efficient for many group problems \cite{my_ms_thesis}.
 
-
-    % matrix sparsity
-    % requires a relatively expensive BICGSTAB or GMRES solve
+    A final consideration for the $\dtilde$ formulation is the incorporation
+    into existing multigroup neutron diffusion reactor simulation computer
+    programs. The vast majority of computer programs developed to simulate
+    nuclear reactors use a $\dtilde$ term whether it be calculated using the
+    \gls{nem} or an other method. By solving for the \gls{nem} coefficients
+    themselves, the method proposed by \citeauthor{qe2paper} requires the
+    development of an entirely new computer program. For the \gls{jfnk} method
+    to become widely accepted, it must be implemented into existing codes to
+    take advantage of existing thermal hydraulic, thermal expansion, and other
+    reactor models. Using this nonstandard form of the \gls{nem} makes the
+    proposed method difficult to compare to the state-of-the-art.
 
   \subsection{Comparison to Production-Quality Computer Programs}
     % Ragged core
