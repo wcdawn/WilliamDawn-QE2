@@ -12,13 +12,13 @@
     the authors compare their converged eigenvalue and scalar flux distribution 
     to a single benchmark problem: the \gls{iaea} 3D \gls{pwr} problem. While
     results are presented for a second pebble bed reactor, these results have
-    not been previously verified so the authors verify against a similar version
-    of the same code. The authors do not demonstrate the spatial convergence
-    order of their method. Typically spatial convergence is demonstrate with the
-    solution to an analytic problem. Additionally, $\lambda$ is not directly
-    related to the norm of the residual $\| \residual (\vx^m) \|$ so no
-    conclusion can be made regarding the behavior of $\lambda$ during the
-    \gls{jfnk} iterations \cite{caslJFNK}.
+    not been previously verified so the authors verify by comparing their
+    \gls{jfnk} solution a similar version of the same code. The authors do not
+    demonstrate the spatial convergence order of their method. Typically spatial
+    convergence is demonstrate with the solution to an analytic problem.
+    Additionally, $\lambda$ is not directly related to the norm of the residual
+    $\| \residual (\vx^m) \|$ so no conclusion can be made regarding the
+    behavior of $\lambda$ during the \gls{jfnk} iterations \cite{caslJFNK}.
 
   \subsection{Critical Boron Concentration Search}
     For the simulation of \glspl{pwr}, one is typically not interested in the
@@ -29,12 +29,12 @@
     critical boron concentration has been performed using a \gls{jfnk}-like
     method but it required special tuning and consideration \cite{caslJFNK}. The
     typical method for calculating the critical boron concentration is related
-    to the Power Iteration method. As the \gls{jfnk} method presented by
+    to the \gls{pi} method. As the \gls{jfnk} method presented by
     \citeauthor{qe2paper} will have different convergence behavior and require a
     different number of outer iterations the standard calculation technique may
     not be applicable.
 
-  \subsection{\texorpdfstring{$\dtilde$ Formulation}{D~ Formulation}}
+  \subsection{\texorpdfstring{$\dtilde$ Formulation}{D\textasciitilde \ Formulation}}
     \label{sec:dtilde_formulation}
     A potentially significant problem of the \gls{jfnk} solution method 
     presented by \citeauthor{qe2paper} is the solution method of the \gls{nem}
@@ -79,7 +79,6 @@
     because the matrix will be \gls{spd}. Additionally, solving each group
     individually is more efficient for many group problems \cite{my_ms_thesis}.
 
-    % todo cite CASMO & MPACT manuals
     A final consideration for the $\dtilde$ formulation is the incorporation
     into existing multigroup neutron diffusion reactor simulation computer
     programs \cite{casmo4,simulate3,mpact}. The vast majority of computer
@@ -88,13 +87,106 @@
     \gls{nem} coefficients themselves, the method proposed by
     \citeauthor{qe2paper} requires the development of an entirely new computer
     program. For the \gls{jfnk} method to become widely accepted, it must be
-    implemented into existing codes to take advantage of existing thermal
-    hydraulic, thermal expansion, and other reactor models. Using this
+    implemented into existing computer programs to take advantage of existing
+    thermal hydraulic, thermal expansion, and other reactor models. Using this
     nonstandard form of the \gls{nem} makes the proposed method difficult to
     compare to the state-of-the-art.
 
   \subsection{Comparison to Production-Quality Computer Programs}
-    % Ragged core
-    % Wielandt Shift
-    % Language optimization
+    The most significant challenge to analyzing the results presented by
+    \citeauthor{qe2paper} is that the results of the \gls{jfnk} method are not
+    compared to ``production-quality'' computer programs. For example, reactor
+    simulators based on the \gls{nem} and using the power iteration method, such
+    as SIMULATE-3, have execution times much quicker than the times reported in
+    the article \cite{simulate3,qe2paper}. The authors rightfully spent time to
+    optimize the \gls{jfnk} method; but, it seems the reference power iteration
+    method to which the authors compare is unoptimized. Therefore, the authors
+    compare optimized code to unoptimized code and conclude that the optimized
+    code is more efficient.
+    
+    The simulation described in the article being reviewed was written in MATLAB
+    which benefits from rapid development but cannot be optimized in the same
+    way a compiled language, such as Fortran can. For example, when a similar
+    comparison of the power iteration method and the \gls{jfnk} method for the
+    multigroup neutron diffusion equation was performed using a simulation
+    written in Fortran, the results indicated the benefits of the \gls{jfnk}
+    method were marginal and often, the power iteration method terminated in
+    less time \cite{gill_azmy}. While the choice of a particular language, the
+    author's results do suffer in part due to the choice of an interpreted
+    rather than a compiled language.
 
+    \subsubsection{Ragged Core}
+      It almost goes without saying that convergence rate can be expected to be
+      strongly related to the number of solving variables. However,
+      \citeauthor{qe2paper} include unnecessary nodes in their simulation. The
+      simulations presented in the article are in the domain of a rectangular
+      prism but standard reactor simulations are performed on a ``ragged core.''
+      In order to simplify the geometry, the authors introduce new nodes at the
+      periphery of the problem. Consider the IAEA benchmark. The introduction of
+      new nodes does not significantly impact the result as the simulation
+      agrees to the benchmark within $4~\units{pcm}$. However, the benchmark
+      geometry can be described exactly by 245, $10~\units{cm} \times
+      10~\units{cm}$ nodes at each axial elevation and the authors simulate 289
+      nodes at each axial elevation. The authors went to great lengths to reduce
+      the number of solution variables (see \sref{sec:local_elimination}), 18\%
+      of the nodes solved are absolutely unnecessary for the problem.
+
+      It may seem that simulating a ragged core would only further improve the
+      relative speedup of the \gls{jfnk} method compared to the power iteration
+      method, but such a conclusion is not straightforward. It is known that in
+      reactor simulations using the power iteration method, the method may spend
+      many iterations unnecessarily solving for the flux in cells with little or
+      no fissile material \cite{gehinThesis}. Therefore, the reactors are
+      simulated with a ``ragged core'' and the convergence criteria is typically
+      written in terms of the distributed fission rate as
+      \begin{equation}
+        \label{eq:power_iteration_convergence}
+        \epsilon_{\phi} \ge \max_{i} \, \left\lvert 
+          \frac{\sum_{g=1}^{G} \nu\Sigma_{f,g,i} \overline{\phi}_{g,i}^{(s)} - 
+          \sum_{g=1}^{G} \nu\Sigma_{f,g,i} \overline{\phi}_{g,i}^{(s-1)}}
+          {\sum_{g=1}^{G} \nu\Sigma_{f,g,i} \overline{\phi}_{g,i}^{(s)}}
+          \right\rvert
+      \end{equation}
+      where $(s)$ represents the iteration counter. The choice in
+      \eref{eq:power_iteration_convergence} ensures nonfissile nodes do not
+      inhibit convergence behavior. However, in the work by
+      \citeauthor{qe2paper}, the convergence of the residual function
+      $\residual(\vx^m)$ is presented.  The convergence of the quantities of
+      interest, $\lambda$ and $\overline{\phi}$, cannot be inferred. Therefore,
+      it is possible that the power iteration method may be spending many
+      iterations in these nodes which have been artificially introduced and that
+      the calculation of $\lambda$ and $\overline{\phi}$ in the reactor could be
+      terminated much earlier.
+
+    \subsubsection{\texorpdfstring{\glsentrylong{ws}}{Wielandt Shift}}
+      The final shortcoming of the comparison of the \gls{jfnk} and power
+      iteration methods presented by \citeauthor{qe2paper} is the improper
+      consideration of the \gls{ws}. The authors claim that integrating the
+      \gls{ws} method into the \gls{jfnk} method will ``improve efficiency
+      further'' \cite{qe2paper}. However, both the work by
+      \citeauthor{gill_azmy} and the discussion of the \gls{pi} dominance ratio
+      in \sref{sec:dominance_ratio} indicate that this is misguided. It is not
+      expected that implementing the \gls{ws} will improve the efficiency of the
+      \gls{jfnk} method.
+
+      The true shortcoming of the results presented by \citeauthor{qe2paper} is
+      that the \gls{pi} method to which the results were compared did not
+      implement the \gls{ws}. It is expected that the \gls{ws} can speedup
+      results of the power iteration method for these problems by a factor of
+      three or more. This would invalidate some of the conclusions by
+      \citeauthor{qe2paper} because the \gls{pi} method would then be faster
+      than the \gls{jfnk} method for some cases.
+
+      Results by \citeauthor{jfnk_wielandt} indicate that even with the
+      \gls{ws}, the \gls{jfnk} method may still provide speedup for the
+      multigroup neutron diffusion equation solution to the IAEA benchmark in
+      two spatial dimensions compared to the \gls{pi} method
+      \cite{jfnk_wielandt}. However, these results may not directly extend to
+      the work by \citeauthor{qe2paper} as the solution is presented for the
+      \gls{nem} and a heavily modified and specially preconditioned form at
+      that.
+
+      Including the \gls{ws} in the \gls{jfnk} method is also shown to be useful
+      for preconditioning the Krylov solver with a series of \glspl{pi}. Unlike
+      \citeauthor{gill_azmy} and \citeauthor{jfnk_wielandt},
+      \citeauthor{qe2paper} do not investigate \gls{pi} preconditioning.
