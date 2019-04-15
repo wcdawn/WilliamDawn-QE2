@@ -1,7 +1,302 @@
 \section{Summary}
 \label{sec:summary}
+  A brief summary of \citetitle{qe2paper} follows. Commentary on the methods
+  presented is included as applicable.
 
-% tentative outline
-  \subsection{Theory and Inexact Newton Condition}
-  \subsection{Dominance Ratio Consideration}
+  \subsection{Multigroup Neutron Diffusion and \glsentrylong{nem}}
+    % write the equation
+    In its conventional form, the multigroup neutron diffusion equation for a
+    problem domain $\vr \in \Omega$ can be written 
+    \begin{equation}
+      \label{eq:multigroup_diffusion}
+      \grad \cdot \current_g(\vr) + \Sigma_{t,g}(\vr) \phi_g(\vr)= 
+        \frac{\chi_g(\vr)}{\lambda} 
+        \sum_{g'=1}^{G} \nu\Sigma_{f,g'}(\vr) 
+        \phi_{g'}(\vr) + \sum_{g'=1}^{G} \Sigma_{s,g' \rightarrow g}(\vr) 
+        \phi_{g'}(\vr)
+    \end{equation}
+    where 
+    \begin{conditions} % custom environment designed for this purpose
+      \vr & spatial position vector, \\
+      \current_g(\vr) & net neutron current for energy group $g$ 
+        \units{$\frac{1}{\text{cm}^2 \; \text{s}}$}, \\
+      \phi_g(\vr) & scalar neutron flux for energy group $g$
+        \units{$\frac{1}{\text{cm}^2 \; \text{s}}$}, \\
+      \Sigma_{t,g}(\vr) & macroscopic total cross section for energy group $g$ 
+        \units{$\frac{1}{\text{cm}}$}, \\
+      \chi_g(\vr) & fission spectrum for energy group $g$,\\
+      \lambda & fundamental eigenvalue, effective neutron multiplication factor, \\
+      \nu \Sigma_{f,g}(\vr) & number of fission neutrons times macroscopic fission
+        cross section in energy group $g$ \units{$\frac{1}{\text{cm}}$}, \\
+      \Sigma_{s,g' \rightarrow g} (\vr) & macroscopic scatter cross section from
+        energy group $g'$ to energy group $g$ \units{$\frac{1}{\text{cm}}$}, \\
+      G & total number of energy groups.
+    \end{conditions}
 
+    The three-dimensional domain $\Omega$ can then be discretized into a
+    structured grid of cubic nodes. Next, the \gls{nem} is introduced.
+    Fundamentally, the \gls{nem} projects the transverse integrated flux onto a 
+    set of basis functions. The transverse integrated multigroup neutron
+    equation is given in \eref{eq:transverse_multigroup_diffusion}
+    \cite{qe2paper}.
+    \begin{equation}
+      \label{eq:transverse_multigroup_diffusion}
+      \frac{d \, \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}} \,
+        \phi_{g,u}(r) = Q_{g,u}(u) - L_{g,u}(u)
+    \end{equation}
+    where $u = x,\ y,\ z$ is a coordinate direction. The terms $Q_{g,u}(u)$ and
+    $L_{g,u}$ represent the transverse integrated neutron source and transverse
+    leakages respectively. Note in \eref{eq:transverse_multigroup_diffusion}
+    that the node indices (i.e. $i,\ j,\ k$) have been omitted and
+    $\overline{\Sigma_{r,g}}$ represents the average value of
+    $\Sigma_{r,g}(\vr)$ in the node. The transverse integrated current
+    $\current_{g,u}$ is then approximated
+    \begin{equation}
+      \label{eq:current_approximation}
+      \current_{g,u} = - \overline{D_g} \, \frac{d \phi_{g,u}(u)}{du}.
+    \end{equation}
+
+    \gls{nem} basis functions are typically polynomials and
+    \citeauthor{qe2paper} select Legendre polynomials. In their work, the scalar
+    flux is projected onto quartic polynomials and the transverse integrated
+    neutron source and transverse leakage terms are projected onto quadratic
+    polynomials. The selection of quartic and quadratic polynomials is
+    consistent as the second derivative of the scalar flux is related to the
+    source and leakage terms \cite{gehinThesis}. This projection can be written
+    \begin{align}
+      \label{eq:flux_expansion}
+      \phi_{g,u}(u) &= \sum_{n=0}^{N_{\phi} = 4} a_{g,u,n} \, f_{u,n}(u), \\
+      \label{eq:source_expansion}
+      Q_{g,u}(u)    &= \sum_{n=0}^{N_Q = 2}      q_{g,u,n} \, f_{u,n}(u), \\
+      \label{eq:leakage_expansion}
+      L_{g,u}(u)    &= \sum_{n=0}^{N_L = 2}      l_{g,u,n} \, f_{u,n}(u),
+    \end{align}
+    where $a_{g,u,n}$, $q_{g,u,n}$, and $l_{g,u,n}$ are the expansion
+    coefficients of $\phi_{g,u}(u)$, $Q_{g,u}(u)$, and $L_{g,u}(u)$ respectively
+    \cite{qe2paper}. To solve for the coefficients of the expansions in
+    \eref{eq:flux_expansion}, \eref{eq:source_expansion}, and
+    \eref{eq:leakage_expansion}, five equations are required. The selected
+    equations are:
+    \begin{enumerate}
+      \item flux continuity condition,
+      \item current continuity condition,
+      \item nodal neutron balance (also $f_0$ weighted residual).
+      \item $f_1$ weighted residual, and
+      \item $f_2$ weighted residual.
+    \end{enumerate}
+    Special attention is paid to boundary conditions and these conditions 
+    replace the flux and current continuity equations.
+
+    \subsubsection{Local Elimination}
+      Recall the quantities of interest for this calculation are the fundamental
+      eigenmode composed of eigenvalue $\lambda$ and eigenvector $\phi_g(\vr)$.
+      The coefficients in \eref{eq:flux_expansion}, \eref{eq:source_expansion},
+      and \eref{eq:leakage_expansion} are not desired directly, but must be
+      solved in order to obtain the quantities of interest. It has been
+      previously demonstrated that all coefficients need not be solved
+      simultaneously which allows for the reduction of the dimensionality of the
+      problem \cite{gehinThesis}.
+
+      The zeroth coefficient $a_{g,u,0} = \overline{\phi_{g,u}}$ because $f_0 =
+      1$. Therefore this, variable cannot be eliminated as it is one of the
+      quantities of interest. Then, the odd and even coefficients can be solved
+      separately \cite{gehinThesis}. This is a result of the choice of the five
+      solution equations selected. 
+
+      \citeauthor{qe2paper} then show that the number of coefficients can be
+      further reduced as the odd coefficients can be expressed in terms of
+      each other with similar results for the even coefficients. That is,
+      instead of solving for $a_{g,u,1}$ and $a_{g,u,3}$, a new coefficient is
+      introduced $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
+      variable. This is an important and novel step of the reviewed work as the
+      solution of \gls{nem} coefficients in the algorithm presented represents 
+      the bulk of the computational time and the number of coefficients for each
+      node and each energy group has been reduced from five to three
+      \cite{qe2paper}.
+
+      Finally, the \gls{nem} equations are solved to obtain currents, scalar
+      fluxes, $a_{g,u,1-3}$, and $a_{g,u,2-4}$ in each node for each energy
+      group. The resulting solution vector, $\vPhi$, can be written 
+      \begin{equation}
+        \label{eq:solution_vector}
+        \vPhi_g =
+        \begin{pmatrix}
+          \vspace{8pt}
+          \current_{g+} \\
+          \overline{\phi_g} \\
+          a_{g,u,1-2} \\
+          a_{g,u,2-4}
+        \end{pmatrix}
+      \end{equation}
+      and the total number of solving variables is $4 \times N \times G$ where
+      $N$ is the total number of nodes and $G$ is the total number of energy
+      groups. Typically, solving for the \gls{nem} coefficients themselves is
+      not preferred as the values themselves are not quantities of interest.
+      Additionally, this method cannot be easily implemented in existing reactor
+      simulation computer program. The preferred implementation computes a
+      modified diffusion coefficient, $\dtilde$, and will be discussed in
+      \sref{sec:dtilde_formulation}.
+
+    \subsubsection{Choice of Physics-Based Preconditioner}
+      Ultimately, the \gls{nem} coefficients will be solved iteratively with a
+      Krylov solver. The wise choice of preconditioner can significantly reduce 
+      the number of Krylov iterations to solve a linear system and it can be
+      shown that if one preconditions a matrix with its inverse, the Krylov
+      method will converge in one iteration \cite{textbookkelley}. While
+      computing the matrix inverse would defeat the purpose of the Krylov
+      method, this result indicates that the preconditioning operator is
+      selected to approximate the matrix inverse.
+
+      An extensive review of the choice of preconditioner in \gls{jfnk}
+      solutions to the multigroup neutron diffusion equation has been presented
+      elsewhere \cite{gill_azmy}. It is expected that the results of the
+      preconditioner study for the neutron diffusion equation should be
+      applicable to the \gls{nem} equations. Preconditioners investigated
+      include the diffusion operator, incomplete Cholesky factorization, the
+      diffusion-fission operator, and preconditioning with a few power
+      iterations. The results of the preconditioner study indicate that
+      preconditioning with approximately five power iterations provided the
+      fastest convergence of the Newton iterations. The incomplete Cholesky
+      preconditioner provided similar convergence rate but requires additional
+      and potentially expensive matrix calculations.
+
+      The use of a power iteration preconditioner was not investigated by
+      \citeauthor{qe2paper}. Instead, the paper's authors design a new
+      preconditioner based on the data available during the \gls{nem}
+      iterations. The benefit of this is that no additional data is required.
+      Special attention is also paid to ensure the preconditioner can be solved
+      using the \gls{tdma} and then \gls{adi} method. These methods are among
+      the fastest computational matrix solution techniques available. The
+      authors incorporate information in the preconditioner from the \gls{nem}
+      equations, group-to-group scattering, and transverse leakage
+      contributions. The preconditioner appears to be computationally expensive
+      to construct. Unfortunately, \citeauthor{qe2paper} do not compare their 
+      preconditioner to any other preconditioner or even an un-preconditioned
+      case so it is impossible to determine the relative computational
+      efficiency of this method.
+
+  \subsection{\glsentrylong{jfnk} Theory and Inexact Newton Condition}
+    The \gls{jfnk} method begins with Newton's method. Newton's method provides
+    a framework to find the root of a residual function 
+    $\residual(\vx^*) = \vzero$ where $\vx^*$ is a root of the residual 
+    function. It is first necessary to construct a residual function based on
+    the \gls{nem} equations. \citeauthor{qe2paper} propose a residual function
+    that contains the \gls{nem} solution, $\vPhi$, residual and is appended with
+    the absolute change in $\lambda$ during the Newton iteration. This differs
+    from the residual function proposed by \citeauthor{gill_azmy} but the new
+    form may be preferable as it directly contains information about $\lambda$.
+    
+    In vector space, the Newton step at the $m^{th}$ step can be described 
+    \begin{equation}
+      \label{eq:newton_step}
+      \jacobian (\vx^m) \, \step^m = - \residual(\vx^m)
+    \end{equation}
+    where $\jacobian(\vx^m)$ is the Jacobian and $\step^m$ is the step. Then,
+    the Newton step proceeds as
+    \begin{equation}
+      \vx^{m+1} = \vx^{m} + \step^{m}.
+    \end{equation}
+
+    It has been demonstrated that, for proper choice of residual function, an
+    analytic Jacobian can be constructed simply \cite{gill_azmy}. However, for
+    the choice of residual function by \citeauthor{qe2paper}, an analytic
+    Jacobian ins not simple to compute. Generally, the Jacobian is
+    computationally expensive to compute and may not be available in analytic
+    form. Therefore, a finite difference approximation is used to estimate the
+    Jacobian. In fact, the Jacobian itself is not needed as the Newton step in
+    \eref{eq:newton_step} will be solved with a Krylov method. All that is
+    needed is the Jacobian-vector product which is equivalent to a directional
+    derivative. The directional derivative can be written
+    \begin{equation}
+      \label{eq:dirder}
+      \jacobian(\vx^m) \, \vv \approx \frac{\residual(\vx^m + \epsilon \vv) - 
+        \residual(\vx^m)}{\epsilon}
+    \end{equation}
+    where $\vv$ is the direction (typically $\step^m$) and $\epsilon$ is the
+    finite difference step size. Typically, $\epsilon$ is on the order of
+    machine precision, $\epsilon_{mach}$
+    \cite{qe2paper,gill_azmy,textbookkelley}. Since the Jacobian has been
+    replaced by a directional derivative, the method is termed Jacobian-Free.
+
+    As previously mentioned, the Newton step in \eref{eq:newton_step} is solved
+    using a Krylov method as
+    \begin{equation}
+      \label{eq:inexact_newton_condition}
+      \| \residual(\vx^m) + \jacobian(\vx^m) \, \step^m \| \le 
+        \eta_m \| \residual(\vx^m) \|
+    \end{equation}
+    where $\eta_m$ is the forcing term. \citeauthor{qe2paper} investigate
+    solving \eref{eq:inexact_newton_condition} using \gls{gmres} and
+    \gls{bicgstab} methods. Note that the method converges regardless of the
+    choice of norm, $\| \cdot \|$, but the choice of norm may affect convergence
+    rate.  Typically, the $L_2$ norm, $\| \cdot \|_2$, is selected.
+    \eref{eq:inexact_newton_condition} is termed the inexact Newton condition.
+    It is known that the choice of forcing term, $\eta_m$, can significantly
+    effect the convergence rate of the \gls{jfnk} \cite{textbookkelley}.
+    Essentially, it is undesirable to ``over-solve''
+    \eref{eq:inexact_newton_condition}, especially during the initial Newton
+    iterations.
+
+    The Eisenstat-Walker forcing term is a standard choice for $\eta_m$ and has
+    been shown to work well \cite{qe2paper,gill_azmy}. In both the work by
+    \citeauthor{qe2paper} and the work by \citeauthor{gill_azmy}, the authors
+    perform a study to determine an optimal choice of forcing term. The authors
+    all determine that the Eisenstat-Walker forcing term is ideal. However,
+    $\eta_m = 10^{-1}$ provides equally good, and sometimes better results
+    \cite{qe2paper,gill_azmy,ma784notes}. These results indicate that both the
+    Eisenstat-Walker forcing term or $\eta_m = 10^{-1}$ perform similarly and
+    such a study will likely be unnecessary in the future.
+
+  \subsection{Convergence Rate Consideration}
+    The $q$-quadratic convergence rate of the \gls{jfnk} method is what makes it
+    desirable to implement. Therefore, it is important to compare the
+    convergence behavior of the \gls{jfnk} method to the currently common Power
+    Iteration method.
+
+    \subsubsection{Convergence of Power Iteration and Dominance Ratio}
+      The convergence behavior of the Power Iteration method has been known well
+      studied \cite{nakamura,gehinThesis,my_ms_thesis}. The convergence rate of
+      the Power Iteration method is determined by the first and second largest
+      eigenvalues of the equations of interest (either the multigroup neutron
+      diffusion equation or \gls{nem} equations). It can be shown that each
+      iteration of the Power Iteration method reduces the error by a multiple
+      termed the dominance ratio, $d$, defined as
+      \begin{equation}
+        \label{eq:dominance_ratio}
+        d = \frac{\lambda_1}{\lambda_0}
+      \end{equation}
+      where $\lambda_0 = \lambda$ is the fundamental eigenvalue and $\lambda_1$
+      is the next largest eigenvalue \cite{my_ms_thesis}. The Power Iteration
+      method converges $q$-linearly and the dominance ratio is the leading
+      coefficient in the convergence behavior. $d$ is guaranteed to be less than
+      one and smaller values of $d$ result in faster convergence 
+      \cite{nakamura}. For typical reactor simulations, $d > 0.9$ and often $d >
+      0.95$ implying convergence is slow, often requiring hundreds of
+      iterations.
+
+      The typical approach to address the challenge of large dominance ratio is
+      the Wielandt shift \cite{gehinThesis}. Briefly, the Wielandt shift
+      subtracts a portion of the fission source from both sides of the equation.
+      It can be shown that the dominance ratio is decreased
+      \textit{significantly} such that $d \approx 0.5$ may be expected. It is
+      common for the Wielandt shift to speed up the solution to the multigroup
+      neutron diffusion equations approximately three times.
+
+    \subsubsection{Convergence of Newton Method}
+      When the iterate in the \gls{jfnk} method, $\vx^m$, is far from the
+      solution, $\vx^*$, the method converges $q$-superlinearly. As the
+      iteration approaches the solution, it achieves $q$-quadratic convergence
+      \cite{textbookkelley}.
+
+      It has been demonstrated that the dominance ratio of the multigroup
+      neutron diffusion equation has little effect on the convergence rate when
+      the equations are solved using the \gls{jfnk} method \cite{gill_azmy}.
+      This is expected as the convergence of the \gls{jfnk} method is not
+      related to the eigenvalues of the operator, but instead is related to the
+      properties of the Jacobian including its Lipschitz continuity
+      \cite{textbookkelley}. These results indicate that the Wielandt shift
+      would have little to no effect on the \gls{jfnk} method. However,
+      \citeauthor{qe2paper} indicate in their concluding remarks that they
+      expect the Wielandt shift to ``improve the efficiency further'' and this
+      is inaccurate \cite{qe2paper}.
+      
