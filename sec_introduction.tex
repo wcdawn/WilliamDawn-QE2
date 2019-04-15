@@ -1,37 +1,35 @@
 \section{Introduction}
 \label{sec:introduction}
 
-% motivation for JFNK investigation
-The multigroup neutron diffusion equation has been demonstrated as a useful
-model for the neutron distribution in a typical nuclear power reactor. With the
-development of the \gls{nem}, the model was made more efficient and
-computational time was significantly decreased. The typical quantities of
-interest in these reactor simulations is the fundamental mode of the eigenvalue
-problem; that is, the largest eigenvalue and associated scalar flux
-distribution.
+  The multigroup neutron diffusion equation has been demonstrated as a useful
+  model for the neutron distribution in a typical nuclear power reactor. With
+  the development of the \gls{nem}, the model was made more efficient and
+  computational time was significantly decreased. The typical quantities of
+  interest in these reactor simulations is the fundamental mode of the
+  eigenvalue problem; that is, the largest eigenvalue and associated scalar flux
+  distribution.
 
-Traditionally, the multigroup neutron diffusion equation has been solved using
-the Power Iteration method. The Power Iteration method is a fixed-point method
-useful for solving eigenvalue problems. It is a linear iteration method and
-converges to the fundamental eigenmode with $q$-linear convergence rate.
-Recently, work has investigated the use of \gls{jfnk} methods in an attempt to
-improve the computational efficiency of solving the multigroup neutron diffusion
-equation. \gls{jfnk} methods are attractive because when the iteration
-terminates, the method has $q$-quadratic convergence rate. However, \gls{jfnk}
-methods require the computation of quantities not required by the Power
-Iteration method including the finite difference approximate Jacobian. Due to
-the challenges of computing these quantities, the implementation of \gls{jfnk}
-methods for computing the fundamental mode to the multigroup neutron diffusion
-equation remains an active area of research.
+  Traditionally, the multigroup neutron diffusion equation has been solved using
+  the \gls{pi} method. The \gls{pi} method is a fixed-point method useful for
+  solving eigenvalue problems. It is a linear iteration method and converges to
+  the fundamental eigenmode with $q$-linear convergence rate.  Recently, work
+  has investigated the use of \gls{jfnk} methods in an attempt to improve the
+  computational efficiency of solving the multigroup neutron diffusion equation.
+  \gls{jfnk} methods are attractive because when the iteration terminates, the
+  method has $q$-quadratic convergence rate. However, \gls{jfnk} methods require
+  the computation of quantities not required by the \gls{pi} method including
+  the finite difference approximate Jacobian. Due to the challenges of computing
+  these quantities, the implementation of \gls{jfnk} methods for computing the
+  fundamental mode to the multigroup neutron diffusion equation remains an
+  active area of research.
 
-% outline of sections
-In \citetitle{qe2paper}, \citeauthor{qe2paper} explore an implementation of the
-\gls{jfnk} that seeks to be efficiently solve the \gls{nem} equations for the
-fundamental eigenmode. \sref{sec:summary} provides a brief summary of this
-work and a few considerations for solving the multigroup neutron diffusion
-equation using \gls{jfnk} methods. Then, \sref{sec:critique} critiques the
-author's implementation with a focus on the applicability of the proposed method
-to realistic nuclear power reactor simulations. Finally, \sref{sec:conclusion}
-provides a few conclusions based on the work by \citeauthor{qe2paper} and
-provides an some considerations for future implementation of the \gls{jfnk}
-method.
+  In \citetitle{qe2paper}, \citeauthor{qe2paper} explore an implementation of
+  the \gls{jfnk} that seeks to be efficiently solve the \gls{nem} equations for
+  the fundamental eigenmode. \sref{sec:summary} provides a brief summary of this
+  work and a few considerations for solving the multigroup neutron diffusion
+  equation using \gls{jfnk} methods. Then, \sref{sec:critique} critiques the
+  author's implementation with a focus on the applicability of the proposed
+  method to realistic nuclear power reactor simulations. Finally,
+  \sref{sec:conclusion} provides a few conclusions based on the work by
+  \citeauthor{qe2paper} and provides an some considerations for future
+  implementation of the \gls{jfnk} method.
