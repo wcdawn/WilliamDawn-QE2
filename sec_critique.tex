@@ -1,27 +1,28 @@
 \section{Critique}
 \label{sec:critique}
+
   The primary motivation for this paper is to critique the article by
   \citeauthor{qe2paper}. While there may be more to critique, the discussion
   here focuses on the application of proposed the \gls{jfnk} to realistic
   reactor simulation problems.
 
   \subsection{Verification and Validation}
+
     Had the authors provided additional results, the implications of the
-    publication may be more significant. However, important data has not been
-    reported by the authors. To demonstrate the implementation of their method,
-    the authors compare their converged eigenvalue and scalar flux distribution 
-    to a single benchmark problem: the \gls{iaea} 3D \gls{pwr} problem. While
-    results are presented for a second pebble bed reactor, these results have
-    not been previously verified so the authors verify by comparing their
-    \gls{jfnk} solution a similar version of the same code. The authors do not
-    demonstrate the spatial convergence order of their method. Typically spatial
-    convergence is demonstrated with the solution to an analytic problem and a
-    mesh convergence study. Additionally, $\lambda$ is not directly related to
-    the norm of the residual $\| \residual (\vx^m) \|$ so no conclusion can be
+    publication may be more significant. To demonstrate the implementation of
+    their method, the authors compare their converged eigenvalue and scalar flux
+    distribution to a single benchmark problem: the \gls{iaea} 3D \gls{pwr}
+    problem. While results are presented for a second pebble bed reactor, these
+    results have not been previously verified. The authors do not demonstrate
+    the spatial convergence order of their method. Typically spatial convergence
+    is demonstrated with the solution to an analytic problem and a mesh
+    convergence study. Additionally, $\lambda$ is not directly related to the
+    norm of the residual, $\| \residual (\vx^m) \|$, so no conclusion can be
     made regarding the behavior of $\lambda$ during the \gls{jfnk} iterations
     \cite{caslJFNK}.
 
   \subsection{Critical Boron Concentration Search}
+
     For the simulation of \glspl{pwr}, one is typically not interested in the
     value of $\lambda$. Instead, the critical boron concentration, $B$, is
     desired such that $\lambda=1.0$. While this may be a simple feature, the
@@ -30,20 +31,22 @@
     critical boron concentration has been performed using a \gls{jfnk}-like
     method but it required special tuning and consideration \cite{caslJFNK}. The
     typical method for calculating the critical boron concentration is related
-    to the \gls{pi} method. As the \gls{jfnk} method presented by
-    \citeauthor{qe2paper} will have different convergence behavior and require a
-    different number of outer iterations the standard calculation technique may
+    to the \gls{pi} method. The \gls{jfnk} method presented by
+    \citeauthor{qe2paper} will have different convergence behavior compared to
+    the conventional \gls{pi} method so the standard calculation technique may
     not be applicable.
 
   \subsection{\texorpdfstring{$\dtilde$ Formulation}{D\textasciitilde \ Formulation}}
     \label{sec:dtilde_formulation}
-    A potentially significant problem of the \gls{jfnk} solution method 
+
+    A potentially significant challenge of the \gls{jfnk} solution method 
     presented by \citeauthor{qe2paper} is the solution method of the \gls{nem}
     coefficients. Typically, the \gls{nem} coefficients, $a_{g,u,n}$, are not
     solved directly and, instead, a $\dtilde$ term is calculated. Consider two
     neighboring nodes, indexed $\ell$ and $\ell+1$. Then, using the $\gls{nem}$
-    coefficients, the current across the intervening surface, $\current_g(u)$, 
-    can be calculated and a $\dtilde$ can be calculated as
+    coefficients calculated in only these nodes, the current across the 
+    intervening surface, $\current_g(u)$, can be calculated. A $\dtilde$ can be 
+    calculated as
     \begin{equation}
       \label{eq:dtilde}
       \current_g(u) = 
@@ -54,9 +57,9 @@
         \dtilde_{g,u} \left( \overline{\phi}_{g,u,\ell+1} +
           \overline{\phi}_{g,u,\ell} \right)
     \end{equation}
-    where $\current_g(u)$ is the current on the edge between nodes,
+    where $\current_g(u)$ is the current on the surface between the nodes,
     $\overline{\phi}_{g,u,\ell}$ is the node average scalar flux in node $\ell$,
-    and $\dtilde$ is dimensionless. $\dtilde$ is now unique to a particular node
+    and $\dtilde$ is dimensionless. $\dtilde$ is now unique to a particular
     surface and must be solved during every outer iteration as a non-linear
     calculation. The implementation of $\dtilde$ as in \eref{eq:dtilde} has been
     demonstrated previously \cite{smith_nonlinear,palmtagThesis}.
@@ -69,17 +72,15 @@
 
     When using the $\dtilde$ formulation, the linear system of equations solved
     is a modified form the finite difference equations for the multigroup
-    neutron diffusion equation and $\dtilde$ acts as an addition term to each
-    matrix element. This has profound implications for the efficient solution of
-    the multigroup neutron diffusion equation. The sparsity pattern of the
-    matrix in the work by \citeauthor{qe2paper} has been shown to have irregular
+    neutron diffusion equation. $\dtilde$ acts as an addition term to each
+    matrix element. This has profound implications for the computational
+    efficiency of the solution method. The sparsity pattern of the matrix in the
+    work by \citeauthor{qe2paper} has been shown to have irregular
     structure \cite{palmtagThesis}. Therefore, the Krylov solver must be
     applicable for general matrices and the authors investigate \gls{bicgstab}
     and \gls{gmres} solvers. However, if the $\dtilde$ formulation is used and
     each energy group is solved individually, a much more efficient \gls{cg}
-    solver can be used because the matrix will be \gls{spd}. Additionally,
-    solving each group individually is more efficient for many group problems
-    \cite{my_ms_thesis}.
+    Krylov solver can be used because the matrix will be \gls{spd}. 
 
     A final consideration for the $\dtilde$ formulation is the incorporation
     into existing multigroup neutron diffusion reactor simulation computer
@@ -88,13 +89,10 @@
     calculated using the \gls{nem} or an other method such as \gls{cmfd}. By
     solving for the \gls{nem} coefficients themselves, the method proposed by
     \citeauthor{qe2paper} requires the development of an entirely new computer
-    program. For the \gls{jfnk} method to become widely accepted, it must be
-    implemented into existing computer programs to take advantage of existing
-    thermal hydraulic, thermal expansion, and other reactor models. Using this
-    nonstandard form of the \gls{nem} makes the proposed method difficult to
-    compare to the state-of-the-art.
+    program.
 
   \subsection{Comparison to Production-Quality Computer Programs}
+
     The most significant challenge to analyzing the results presented by
     \citeauthor{qe2paper} is that the results of the \gls{jfnk} method are not
     compared to ``production-quality'' computer programs. 
@@ -111,15 +109,16 @@
     The simulation described in the article being reviewed was written in MATLAB
     which benefits from rapid development but cannot be optimized in the same
     way a compiled language, such as Fortran, can. For example, when a similar
-    comparison of the power iteration method and the \gls{jfnk} method for the
+    comparison of the \gls{pi} method and the \gls{jfnk} method for the
     multigroup neutron diffusion equation was performed using a simulation
     written in Fortran, the results indicated the benefits of the \gls{jfnk}
-    method were marginal and often, the power iteration method terminated in
-    less time \cite{gill_azmy}. While the choice of a particular language, the
-    authors' results do suffer in part due to the choice of an interpreted
-    rather than a compiled language.
+    method were marginal and often, the \gls{pi} method terminated in less time 
+    \cite{gill_azmy}. While the choice of a particular language, the authors'
+    results do suffer in part due to the choice of an interpreted rather than a
+    compiled language.
 
     \subsubsection{Ragged Core}
+
       It almost goes without saying that solution time can be expected to be
       strongly related to the number of solving variables. However,
       \citeauthor{qe2paper} include unnecessary nodes in their simulation. The
@@ -141,41 +140,24 @@
       method, but such a conclusion is not straightforward. It is known that in
       reactor simulations using the \gls{pi} method, the method may spend many 
       iterations unnecessarily solving for the flux in cells with little or no 
-      fissile material \cite{gehinThesis}. Therefore, the reactors are simulated 
-      with a ``ragged core'' and the \gls{pi} eigenvector convergence criteria 
-      is typically written in terms of the distributed fission rate as
-      \begin{equation}
-        \label{eq:power_iteration_convergence}
-        \epsilon_{\phi} \ge \max_{i} \, \left\lvert 
-          \frac{\sum_{g=1}^{G} \nu\Sigma_{f,g,i} \overline{\phi}_{g,i}^{(s)} - 
-          \sum_{g=1}^{G} \nu\Sigma_{f,g,i} \overline{\phi}_{g,i}^{(s-1)}}
-          {\sum_{g=1}^{G} \nu\Sigma_{f,g,i} \overline{\phi}_{g,i}^{(s)}}
-          \right\rvert
-      \end{equation}
-      where $(s)$ represents the iteration counter. The choice in
-      \eref{eq:power_iteration_convergence} ensures nodes without fissile
-      material do not inhibit convergence behavior. However, in the work by
-      \citeauthor{qe2paper}, the convergence of the residual function
-      $\residual(\vx^m)$ is presented. The convergence of the quantities of
-      interest, $\lambda$ and $\overline{\phi}$, cannot be inferred. Therefore,
-      it is possible that the power iteration method may be spending many
-      iterations in these nodes whereas the \gls{jfnk} method would not
-      experience such behavior. It is possible that which have been
-      artificially introduced and that the calculation of $\lambda$ and
-      $\overline{\phi}$ by means of the \gls{pi} method could be terminated much
-      earlier.
+      fissile material \cite{gehinThesis}. In the work by \citeauthor{qe2paper},
+      the convergence of the quantities of interest, $\lambda$ and
+      $\overline{\phi}$, cannot be inferred. Therefore, it is possible that the
+      power iteration method may be spending many iterations in these nodes
+      whereas the \gls{jfnk} method would not experience such behavior.
 
     \subsubsection{\texorpdfstring{\glsentrylong{ws}}{Wielandt Shift}}
     \label{sec:wielandt_shift}
-      The final shortcoming of the comparison of the \gls{jfnk} and power
-      iteration methods presented by \citeauthor{qe2paper} is the improper
-      consideration of the \gls{ws}. The authors claim that integrating the
-      \gls{ws} method into the \gls{jfnk} method will ``improve efficiency
-      further'' \cite{qe2paper}. However, both the work by
-      \citeauthor{gill_azmy} and the discussion of the \gls{pi} dominance ratio
-      in \sref{sec:dominance_ratio} indicate that this is misguided. It is not
-      expected that implementing the \gls{ws} will improve the efficiency of the
-      \gls{jfnk} method.
+
+      The final shortcoming of the comparison of the \gls{jfnk} and \gls{pi}
+      methods presented by \citeauthor{qe2paper} is the improper consideration 
+      of the \gls{ws}. The authors claim that integrating the \gls{ws} method
+      into the \gls{jfnk} method will ``improve efficiency further''
+      \cite{qe2paper}. However, both the work by \citeauthor{gill_azmy} and the
+      discussion of the \gls{pi} dominance ratio in \sref{sec:dominance_ratio}
+      indicate that this claim is misguided. It is not expected that
+      implementing the \gls{ws} will improve the efficiency of the \gls{jfnk}
+      method.
 
       The true shortcoming of the results presented by \citeauthor{qe2paper} is
       that the \gls{pi} method to which the results were compared did not
