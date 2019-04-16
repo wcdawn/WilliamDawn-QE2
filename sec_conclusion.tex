@@ -1,15 +1,15 @@
 \section{Conclusions and Implications}
 \label{sec:conclusion}
 
-  In \citetitle{qe2paper}, the authors conclude that the proposed method of
-  solving the \gls{nem} equations with the \gls{jfnk} method after performing 
-  local elimination and using the physics based preconditioner provides improved
-  convergence rate and reduced computation time compared to their presentation
-  of the \gls{pi} method. It is difficult to argue with these results as
-  presented. However, \sref{sec:critique} has shown that it is the data omitted
-  from the results presented that merits consideration. Otherwise, it is
+  In \citetitle{qe2paper}, \citeauthor{qe2paper} conclude that the proposed
+  method of solving the \gls{nem} equations with the \gls{jfnk} method after
+  performing local elimination and using the physics based preconditioner
+  provides improved convergence rate and reduced computation time compared to
+  their presentation of the \gls{pi} method. It is difficult to argue with these
+  results as presented. However, \sref{sec:critique} has shown that it is the
+  data omitted from the results that merits consideration. Otherwise, it is
   difficult to extend the results of \citeauthor{qe2paper} to broader
-  application of the \gls{jfnk} method for solving the \gls{nem} equations.
+  applications of the \gls{jfnk} method for solving the \gls{nem} equations.
 
   The first step for better interpreting the results presented is to compare the
   \gls{jfnk} method to a \gls{pi} method using the \gls{ws} as in the work by
@@ -24,7 +24,7 @@
   will be extended to ``improve the computational efficiency for large-scale
   complicated multiphysics coupled problems in nuclear reactor analysis''
   \cite{qe2paper}. This may seem like a straightforward extension, but a new
-  residual function and Jacobian approximation are likely required.
+  residual function and Jacobian approximation will likely be required.
 
   The authors' claim is extremely bold given both the lack of important results
   and other publications in the field. Specifically, \citeauthor{caslJFNK}
@@ -37,7 +37,7 @@
   full reactor multiphysics simulations, it was determined that without the
   calculation of cross section derivatives, the \gls{jfnk} method was
   unacceptable as it required a burdensome amount of cross section processing 
-  time \cite{caslJFNK}.
+  time during the simulation \cite{caslJFNK}.
 
   The results of \citeauthor{caslJFNK} are not the end of the narrative. 
   Applying the \gls{jfnk} method to the \gls{nem} equations may be useful for
@@ -48,4 +48,4 @@
   a benefit compared to existing methods. When drawing conclusions about
   improvements in computational efficiency due to a new method, it is crucial to 
   compare optimized codes to determine if any improvement is true, or merely due
-  to an suboptimal implementation.
+  to a suboptimal implementation.
