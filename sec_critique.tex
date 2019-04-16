@@ -39,13 +39,13 @@
   \subsection{\texorpdfstring{$\dtilde$ Formulation}{D\textasciitilde \ Formulation}}
     \label{sec:dtilde_formulation}
 
-    A potentially significant challenge of the \gls{jfnk} solution method 
+    A potentially significant challenge of the \gls{jfnk} solution method
     presented by \citeauthor{qe2paper} is the solution method of the \gls{nem}
     coefficients. Typically, the \gls{nem} coefficients, $a_{g,u,n}$, are not
     solved directly and, instead, a $\dtilde$ term is calculated. Consider two
     neighboring nodes, indexed $\ell$ and $\ell+1$. Then, using the $\gls{nem}$
-    coefficients calculated in only these nodes, the current across the 
-    intervening surface, $\current_g(u)$, can be calculated. A $\dtilde$ can be 
+    coefficients calculated in only these nodes, the current across the
+    intervening surface, $\current_g(u)$, can be calculated. A $\dtilde$ can be
     calculated as
     \begin{equation}
       \label{eq:dtilde}
@@ -75,12 +75,12 @@
     neutron diffusion equation. $\dtilde$ acts as an addition term to each
     matrix element. This has profound implications for the computational
     efficiency of the solution method. The sparsity pattern of the matrix in the
-    work by \citeauthor{qe2paper} has been shown to have irregular
-    structure \cite{palmtagThesis}. Therefore, the Krylov solver must be
-    applicable for general matrices and the authors investigate \gls{bicgstab}
-    and \gls{gmres} solvers. However, if the $\dtilde$ formulation is used and
-    each energy group is solved individually, a much more efficient \gls{cg}
-    Krylov solver can be used because the matrix will be \gls{spd}. 
+    work by \citeauthor{qe2paper} has been shown to have irregular structure
+    \cite{palmtagThesis}. Therefore, the Krylov solver must be applicable for
+    general matrices and the authors investigate \gls{bicgstab} and \gls{gmres}
+    solvers. However, if the $\dtilde$ formulation is used and each energy group
+    is solved individually, a much more efficient \gls{cg} Krylov solver can be
+    used because the matrix will be \gls{spd}. 
 
     A final consideration for the $\dtilde$ formulation is the incorporation
     into existing multigroup neutron diffusion reactor simulation computer
@@ -97,14 +97,14 @@
     \citeauthor{qe2paper} is that the results of the \gls{jfnk} method are not
     compared to ``production-quality'' computer programs. 
     
-    For example, reactor simulators based on the \gls{nem} and using the power
-    iteration method, such as SIMULATE-3, have execution times much quicker than
+    For example, reactor simulators based on the \gls{nem} and using the
+    \gls{pi} method, such as SIMULATE-3, have execution times much quicker than
     the time required by the \gls{pi} reported in the article
     \cite{simulate3,qe2paper}. The authors rightfully spent time to optimize the
-    \gls{jfnk} method; but, it seems the reference power iteration method to
-    which the authors compare is unoptimized. Therefore, the authors compare
-    optimized code to unoptimized code and conclude that the optimized code is
-    more efficient.
+    \gls{jfnk} method; but, it seems the reference \gls{pi} method to which the
+    authors compare is unoptimized. Therefore, the authors compare optimized
+    code to unoptimized code and conclude that the optimized code is more
+    efficient.
     
     The simulation described in the article being reviewed was written in MATLAB
     which benefits from rapid development but cannot be optimized in the same
@@ -112,7 +112,7 @@
     comparison of the \gls{pi} method and the \gls{jfnk} method for the
     multigroup neutron diffusion equation was performed using a simulation
     written in Fortran, the results indicated the benefits of the \gls{jfnk}
-    method were marginal and often, the \gls{pi} method terminated in less time 
+    method were marginal and often, the \gls{pi} method terminated in less time
     \cite{gill_azmy}. While the choice of a particular language, the authors'
     results do suffer in part due to the choice of an interpreted rather than a
     compiled language.
@@ -136,21 +136,21 @@
       problem.
 
       It may seem that simulating a ragged core would only further improve the
-      relative speedup of the \gls{jfnk} method compared to the \gls{pi}
-      method, but such a conclusion is not straightforward. It is known that in
-      reactor simulations using the \gls{pi} method, the method may spend many 
-      iterations unnecessarily solving for the flux in cells with little or no 
+      relative speedup of the \gls{jfnk} method compared to the \gls{pi} method,
+      but such a conclusion is not straightforward. It is known that in reactor
+      simulations using the \gls{pi} method, the method may spend many
+      iterations unnecessarily solving for the flux in cells with little or no
       fissile material \cite{gehinThesis}. In the work by \citeauthor{qe2paper},
       the convergence of the quantities of interest, $\lambda$ and
       $\overline{\phi}$, cannot be inferred. Therefore, it is possible that the
-      power iteration method may be spending many iterations in these nodes
-      whereas the \gls{jfnk} method would not experience such behavior.
+      \gls{pi} method may be spending many iterations in these nodes whereas the
+      \gls{jfnk} method would not experience such behavior.
 
     \subsubsection{\texorpdfstring{\glsentrylong{ws}}{Wielandt Shift}}
     \label{sec:wielandt_shift}
 
       The final shortcoming of the comparison of the \gls{jfnk} and \gls{pi}
-      methods presented by \citeauthor{qe2paper} is the improper consideration 
+      methods presented by \citeauthor{qe2paper} is the improper consideration
       of the \gls{ws}. The authors claim that integrating the \gls{ws} method
       into the \gls{jfnk} method will ``improve efficiency further''
       \cite{qe2paper}. However, both the work by \citeauthor{gill_azmy} and the
@@ -162,8 +162,8 @@
       The true shortcoming of the results presented by \citeauthor{qe2paper} is
       that the \gls{pi} method to which the results were compared did not
       implement the \gls{ws}. It is expected that the \gls{ws} can speedup
-      results of the power iteration method for these problems by a factor of
-      three or more. This would invalidate some of the conclusions by
+      results of the \gls{pi} method for these problems by a factor of three or
+      more. This would invalidate some of the conclusions by
       \citeauthor{qe2paper} because the \gls{pi} method would then be faster
       than the \gls{jfnk} method for some cases.
 
@@ -179,5 +179,5 @@
       Including the \gls{ws} in the \gls{jfnk} method is also shown to be useful
       for preconditioning the Krylov solver with a series of \glspl{pi}. Unlike
       \citeauthor{gill_azmy} and \citeauthor{jfnk_wielandt},
-      \citeauthor{qe2paper} do not investigate \gls{pi} preconditioning but
-      such a preconditioner warrants investigation.
+      \citeauthor{qe2paper} do not investigate \gls{pi} preconditioning but such
+      a preconditioner warrants investigation.
