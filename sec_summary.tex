@@ -11,11 +11,11 @@
     problem domain $\vr \in \Omega$ can be written 
     \begin{equation}
       \label{eq:multigroup_diffusion}
-      \grad \cdot \current_g(\vr) + \Sigma_{t,g}(\vr) \phi_g(\vr)= 
+      \grad \cdot \current_g(\vr) + \Sigma_{r,g}(\vr) \phi_g(\vr)= 
         \frac{\chi_g(\vr)}{\lambda} 
-        \sum_{g'=1}^{G} \nu\Sigma_{f,g'}(\vr) 
-        \phi_{g'}(\vr) + \sum_{g'=1}^{G} \Sigma_{s,g' \rightarrow g}(\vr) 
-        \phi_{g'}(\vr)
+        \sum_{g'=1}^{G} \nu\Sigma_{f,g'}(\vr) \, \phi_{g'}(\vr) + 
+        \sum_{\substack{g'=1 \\ g' \ne g}}^{G} 
+        \Sigma_{s,g' \rightarrow g}(\vr) \, \phi_{g'}(\vr)
     \end{equation}
     where 
     \begin{conditions} % custom environment designed for this purpose
@@ -25,7 +25,7 @@
       \phi_g(\vr) & fundamental eigenvector, 
         scalar neutron flux for energy group $g$
         \units{$\frac{1}{\text{cm}^2 \; \text{s}}$}, \\
-      \Sigma_{t,g}(\vr) & macroscopic total cross section for energy group $g$ 
+      \Sigma_{r,g}(\vr) & macroscopic removal cross section for energy group $g$ 
         \units{$\frac{1}{\text{cm}}$}, \\
       \chi_g(\vr) & fission spectrum for energy group $g$,\\
       \lambda & fundamental eigenvalue, effective neutron multiplication factor, \\
@@ -40,19 +40,18 @@
     structured grid of nodes. Next, the \gls{nem} is introduced. Fundamentally,
     the \gls{nem} projects the transverse integrated flux onto a set of basis
     functions. The transverse integrated multigroup neutron equation is given as
-    \cite{qe2paper}.
     \begin{equation}
       \label{eq:transverse_multigroup_diffusion}
       \frac{d \, \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}} \,
         \phi_{g,u}(r) = Q_{g,u}(u) - L_{g,u}(u)
     \end{equation}
-    where $u = x,\ y,\ z$ is a coordinate direction. The terms $Q_{g,u}(u)$ and
-    $L_{g,u}$ represent the transverse integrated neutron source and transverse
-    leakages respectively. Note, in \eref{eq:transverse_multigroup_diffusion}
-    that the node indices (i.e. $i,j,k$) have been omitted and
-    $\overline{\Sigma_{r,g}}$ represents the average value of
-    $\Sigma_{r,g}(\vr)$ in the node. The transverse integrated current
-    $\current_{g,u}$ is then approximated
+    where $u = x,\ y,\ z$ is a coordinate direction \cite{qe2paper}. The terms 
+    $Q_{g,u}(u)$ and $L_{g,u}(u)$ represent the transverse integrated neutron
+    source and transverse leakages respectively. Note, in
+    \eref{eq:transverse_multigroup_diffusion} that the node indices (i.e.
+    $i,j,k$) have been omitted and $\overline{\Sigma_{r,g}}$ represents the
+    average value of $\Sigma_{r,g}(\vr)$ in the node. The transverse integrated
+    current $\current_{g,u}$ is then approximated
     \begin{equation}
       \label{eq:current_approximation}
       \current_{g,u} = - \overline{D_g} \, \frac{d \phi_{g,u}(u)}{du}
@@ -85,7 +84,7 @@
     \begin{enumerate}
       \item flux continuity condition,
       \item current continuity condition,
-      \item nodal neutron balance (also $f_0$ weighted residual).
+      \item nodal neutron balance (also $f_0$ weighted residual),
       \item $f_1$ weighted residual, and
       \item $f_2$ weighted residual.
     \end{enumerate}
@@ -105,8 +104,8 @@
       problem \cite{gehinThesis}.
 
       The zeroth coefficient $a_{g,u,0} = \overline{\phi_{g,u}}$ because $f_0 =
-      1$. Therefore this, variable cannot be eliminated as it is one of the
-      quantities of interest. Then, the odd and even coefficients can be solved
+      1$. Therefore, this variable cannot be eliminated as it is one of the
+      quantities of interest. The odd and even coefficients can be solved
       separately \cite{gehinThesis}. This is a result of the choice of the five
       solution equations selected. 
 
@@ -164,14 +163,14 @@
       An extensive review of the choice of preconditioner in \gls{jfnk}
       solutions to the multigroup neutron diffusion equation has been presented
       elsewhere \cite{gill_azmy}. It is expected that the results of the
-      preconditioner study for the neutron diffusion equation should be
-      applicable to the \gls{nem} equations. Preconditioners investigated
+      preconditioner study for the multigroup neutron diffusion equation should
+      be applicable to the \gls{nem} equations. Preconditioners investigated
       include the diffusion operator, incomplete Cholesky factorization, the
-      diffusion-fission operator, and preconditioning with a few \glspl{pi}.
-      The results of the preconditioner study indicate that preconditioning with
+      diffusion-fission operator, and preconditioning with a few \glspl{pi}. The
+      results of the preconditioner study indicate that preconditioning with
       approximately five \glspl{pi} provided the fastest convergence of the
-      Newton iterations. The incomplete Cholesky preconditioner provided similar
-      convergence rate but requires additional and expensive matrix
+      \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
+      similar convergence rate but requires additional and expensive matrix
       calculations. A \gls{pi} preconditioner was also investigated in work by
       \citeauthor{jfnk_wielandt} and similar performance was reported.
 
@@ -193,22 +192,22 @@
   \subsection{\glsentrylong{jfnk} Theory and Inexact Newton Condition}
 
     The \gls{jfnk} method begins with Newton's method. Newton's method provides
-    a framework to find the root of a residual function 
-    $\residual(\vx^*) = \vzero$ where $\vx^*$ is a root of the residual 
-    function. It is first necessary to construct a residual function based on
-    the \gls{nem} equations. \citeauthor{qe2paper} propose a residual function
-    that contains the \gls{nem} solution, $\vPhi$, residual and the absolute
-    change in $\lambda$ during the Newton iteration. This differs from the
-    residual function proposed by \citeauthor{gill_azmy} but the new form may be
-    preferable as it directly contains information about $\lambda$.
+    a framework to find the root of a residual function as $\residual(\vx^*) =
+    \vzero$. It is first necessary to construct a residual function based on the
+    \gls{nem} equations. \citeauthor{qe2paper} propose a residual function that
+    contains the \gls{nem} solution, $\vPhi_g$, residual and the absolute change
+    in the fundamental eigenvalue, $\lambda$, during the Newton iteration. This
+    differs from the residual function proposed by \citeauthor{gill_azmy} but
+    the new form may be preferable as it directly contains information about
+    $\lambda$.
     
-    In vector space, the Newton step at the $m^{th}$ step can be described 
+    The Newton step at the $m^{th}$ step can be described 
     \begin{equation}
       \label{eq:newton_step}
       \jacobian (\vx^m) \, \step^m = - \residual(\vx^m)
     \end{equation}
     where $\jacobian(\vx^m)$ is the Jacobian of $\residual(\vx^m)$ and 
-    $\step^m$ is the step. Then, the Newton step proceeds as
+    $\step^m$ is the Newton step. Then, the Newton step proceeds as
     \begin{equation}
       \vx^{m+1} = \vx^{m} + \step^{m}.
     \end{equation}
@@ -238,11 +237,12 @@
       \| \residual(\vx^m) + \jacobian(\vx^m) \, \step^m \| \le 
         \eta_m \| \residual(\vx^m) \|
     \end{equation}
-    where $\eta_m$ is the forcing term. \citeauthor{qe2paper} investigate
+    where $\eta_m$ is the forcing term. \citeauthor{qe2paper} investigated
     solving \eref{eq:inexact_newton_condition} using \gls{gmres} and
-    \gls{bicgstab} Krylov methods. \eref{eq:inexact_newton_condition} is termed
-    the inexact Newton condition. It is known that the choice of forcing term,
-    $\eta_m$, can significantly effect the convergence rate of the \gls{jfnk}
+    \gls{bicgstab} Krylov methods and determined that \gls{bicgstab} performed
+    preferably. \eref{eq:inexact_newton_condition} is termed the inexact Newton
+    condition. It is known that the choice of forcing term, $\eta_m$, can
+    significantly effect the convergence rate of the \gls{jfnk}
     \cite{textbookkelley}. Essentially, it is undesirable to ``over-solve''
     \eref{eq:inexact_newton_condition}, especially during the initial Newton
     iterations.
@@ -264,8 +264,7 @@
     convergence behavior of the \gls{jfnk} method to the currently common
     \gls{pi} method.
 
-    \subsubsection{\texorpdfstring{Convergence of \glsentrylong{pi}
-      Method}{Convergence of Power Iteration Method}}
+    \subsubsection{Convergence of \glsentrylong{pi} Method}
       \label{sec:dominance_ratio}
 
       The convergence behavior of the \gls{pi} method is known and well studied 
@@ -282,10 +281,11 @@
       where $\lambda_0 = \lambda$ is the fundamental eigenvalue and $\lambda_1$
       is the next largest eigenvalue \cite{my_ms_thesis}. The \gls{pi} method
       converges $q$-linearly and the dominance ratio is the leading coefficient
-      in the convergence behavior. $d$ is guaranteed to be less than one and
-      smaller values of $d$ result in faster convergence \cite{nakamura}. For
-      typical reactor simulations, $d > 0.9$ and often $d > 0.95$ implying
-      convergence is slow, often requiring hundreds of iterations.
+      in the convergence behavior. For the multigroup neutron diffusion and
+      \gls{nem} equations, $d$ is guaranteed to be less than one and smaller
+      values of $d$ result in faster convergence \cite{nakamura}. For typical
+      reactor simulations, $d > 0.9$ and often $d > 0.95$ implying convergence
+      is slow, often requiring hundreds of iterations.
 
       The typical approach to address the challenge of large dominance ratios is
       the \gls{ws} \cite{gehinThesis}. Briefly, the \gls{ws} subtracts a portion
