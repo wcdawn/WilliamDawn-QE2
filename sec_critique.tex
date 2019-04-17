@@ -74,15 +74,11 @@
     When using the $\dtilde$ formulation, the linear system of equations solved
     is a modified form of the finite difference equations for the multigroup
     neutron diffusion equation. $\dtilde$ acts as an addition term to each
-    matrix element. This has profound implications for the computational
-    efficiency of the solution method. The sparsity pattern of the matrix in the
-    work by \citeauthor{qe2paper} has been shown to have irregular structure
-    \cite{palmtagThesis}. Therefore, the Krylov solver must be applicable for
-    general matrices and the authors investigate \gls{bicgstab} and \gls{gmres}
-    solvers. However, if the $\dtilde$ formulation is used and each energy group
-    is solved independently, a much more efficient \gls{cg} Krylov solver can be
-    used because the matrix will be \gls{spd}. 
-
+    matrix element. The evaluation of $\residual(\vx^m)$ using the $\dtilde$
+    formulation will therefore require fewer operations and the finite
+    difference Jacobian-vector product from \eref{eq:dirder} can be evaluated
+    more efficiently.
+    
     A final consideration for the $\dtilde$ formulation is the incorporation
     into existing multigroup neutron diffusion reactor simulation computer
     programs \cite{casmo4,simulate3,mpact}. A majority of computer programs
@@ -98,26 +94,6 @@
     \citeauthor{qe2paper} is that the results of the \gls{jfnk} method are not
     compared to ``production-quality'' computer programs. 
     
-    For example, reactor simulators based on the \gls{nem} and using the
-    \gls{pi} method, such as SIMULATE-3, have execution times much quicker than
-    the time required by the \gls{pi} reported in the article
-    \cite{simulate3,qe2paper}. The authors rightfully spent time to optimize the
-    \gls{jfnk} method; but, it seems the reference \gls{pi} method to which the
-    authors compare is unoptimized. Therefore, the authors compare optimized
-    code to unoptimized code and conclude that the optimized code is more
-    efficient.
-    
-    The simulation described in the article being reviewed was written in MATLAB
-    which benefits from rapid development but cannot be optimized in the same
-    way a compiled language, such as Fortran, can. For example, when a similar
-    comparison of the \gls{pi} method and the \gls{jfnk} method for the
-    multigroup neutron diffusion equation was performed using a simulation
-    written in Fortran, the results indicated the benefits of the \gls{jfnk}
-    method were marginal and often, the \gls{pi} method terminated in less time
-    \cite{gill_azmy}. While the choice of a particular language, the authors'
-    results do suffer in part due to the choice of an interpreted rather than a
-    compiled language.
-
     \subsubsection{Ragged Core}
 
       It almost goes without saying that solution time can be expected to be
