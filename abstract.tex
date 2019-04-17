@@ -2,7 +2,7 @@
 \begin{abstract}
 
   \gls{jfnk} methods promise a robust framework for solving nonlinear equations.
-  The \gls{jfnk} method provides $q$-quadratic convergence and only requires a
+  The \gls{jfnk} methods provides $q$-quadratic convergence and only require a
   finite difference Jacobian-vector product rather than a full Jacobian.
   However, the adoption of the \gls{jfnk} method in the simulation of nuclear
   reactors has proven difficult due to computational complexity. As such, the
@@ -12,10 +12,10 @@
   In \citetitle{qe2paper}, authors \citeauthor{qe2paper} present an
   implementation of the \gls{jfnk} method to solve the \gls{nem} equations. In
   their method, the authors reduce the number of solution variables by employing
-  local-elimination and attempt to improve the efficiency of the Krylov solver
-  by preconditioning with a specially designed physics-based preconditioner.
-  This implementation of the \gls{jfnk} method is compared to a \gls{pi} method
-  and the authors conclude that ``the \gls{nem}\_\gls{jfnk} methods can greatly
+  local-elimination and improve the efficiency of the Krylov solver by
+  preconditioning with a specially designed physics-based preconditioner. This
+  implementation of the \gls{jfnk} method is compared to a \gls{pi} method and
+  the authors conclude that ``the \gls{nem}\_\gls{jfnk} methods can greatly
   improve the convergence rate and the computational efficiency''
   \cite{qe2paper}.
   
@@ -32,8 +32,8 @@
   Ultimately, \citeauthor{qe2paper} present a comparison of suboptimal codes and
   suggest that the \gls{jfnk} method is preferable because it has reduced
   execution time. Such claims cannot be substantiated by the results presented.
-  It is essential to compare optimized codes before conclusions regarding
-  an improvement in methods can be made.
+  It is essential to compare optimized codes before making conclusions regarding
+  an improvement in methods.
 
 \end{abstract}
 \glsresetall

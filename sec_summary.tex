@@ -95,20 +95,16 @@
       \label{sec:local_elimination}
 
       Recall the quantities of interest for this calculation are the fundamental
-      eigenmode composed of eigenvalue $\lambda$ and eigenvector $\phi_g(\vr)$.
-      The coefficients in \eref{eq:flux_expansion}, \eref{eq:source_expansion},
-      and \eref{eq:leakage_expansion} are not desired directly, but must be
-      solved in order to obtain the quantities of interest. It has been
-      previously demonstrated that all coefficients need not be solved
-      simultaneously which allows for the reduction of the dimensionality of the
-      problem \cite{gehinThesis}.
-
-      The zeroth coefficient $a_{g,u,0} = \overline{\phi_{g,u}}$ because $f_0 =
-      1$. Therefore, this variable cannot be eliminated as it is one of the
-      quantities of interest. The odd and even coefficients can be solved
-      separately \cite{gehinThesis}. This is a result of the choice of the five
-      solution equations selected. 
-
+      eigenmode composed of eigenvalue, $\lambda$, and eigenvector,
+      $\phi_g(\vr)$. The coefficients in \eref{eq:flux_expansion},
+      \eref{eq:source_expansion}, and \eref{eq:leakage_expansion} are not
+      desired directly, but must be solved in order to obtain the quantities of
+      interest. It has been previously demonstrated that all coefficients need
+      not be solved simultaneously which allows for the reduction of the
+      dimensionality of the problem. The odd and even coefficients can be solved
+      separately as a result of the five solution equations selected
+      \cite{gehinThesis}.
+      
       \citeauthor{qe2paper} then show that the number of coefficients can be
       further reduced as the odd coefficients can be expressed in terms of
       each other with similar results for the even coefficients. That is,
@@ -116,8 +112,8 @@
       introduced $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
       variable. This is an important and novel step of the reviewed work as the
       solution of \gls{nem} coefficients represents the bulk of the
-      computational time and the number of coefficients for each node and each
-      energy group has been reduced from five to three
+      computational time and the number of coefficients for each node, each
+      energy group, and each direction has been reduced from five to three
       \cite{qe2paper}.
 
       Finally, the \gls{nem} equations are solved to obtain currents, scalar
@@ -172,36 +168,37 @@
       \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
       similar convergence rate but requires additional and expensive matrix
       calculations. A \gls{pi} preconditioner was also investigated in work by
-      \citeauthor{jfnk_wielandt} and similar performance was reported.
+      \citeauthor{jfnk_wielandt} and similar performance was reported
+      \cite{jfnk_wielandt}.
 
       The use of a \gls{pi} preconditioner was not investigated by
-      \citeauthor{qe2paper}. Instead, the authors design a new
-      preconditioner based on the data available during the \gls{nem}
-      iterations. The benefit of this is that no additional data is required.
-      Special attention is also paid to ensure the preconditioner can be solved
-      using the \gls{tdma} and then \gls{adi} methods. These methods are among
-      the fastest numerical matrix solution techniques available. The authors
-      incorporate information in the preconditioner from the \gls{nem}
-      equations, group-to-group scattering, and transverse leakage
-      contributions. The construction of the preconditioner appears to be 
-      computationally expensive. Unfortunately, \citeauthor{qe2paper} do not
-      compare their preconditioner to any other preconditioner or even a case
-      without a preconditioner. Therefore, it is impossible to determine the
-      relative computational efficiency of this preconditioning method.
+      \citeauthor{qe2paper}. Instead, the authors design a new preconditioner
+      based on the data available during the \gls{nem} iterations. Special
+      attention is also paid to ensure the preconditioner can be solved using
+      the \gls{tdma} and \gls{adi} methods. These methods are among the fastest
+      numerical matrix solution techniques available. The authors incorporate
+      information in the preconditioner from the \gls{nem} equations,
+      group-to-group scattering, and transverse leakage contributions. The
+      construction of the preconditioner appears to be computationally
+      expensive. Unfortunately, \citeauthor{qe2paper} do not compare their
+      preconditioner to any other preconditioner or even a case without a
+      preconditioner. Therefore, it is impossible to determine the relative
+      computational efficiency of this preconditioning method.
 
   \subsection{\glsentrylong{jfnk} Theory and Inexact Newton Condition}
 
     The \gls{jfnk} method begins with Newton's method. Newton's method provides
     a framework to find the root of a residual function as $\residual(\vx^*) =
-    \vzero$. It is first necessary to construct a residual function based on the
-    \gls{nem} equations. \citeauthor{qe2paper} propose a residual function that
-    contains the \gls{nem} solution, $\vPhi_g$, residual and the absolute change
-    in the fundamental eigenvalue, $\lambda$, during the Newton iteration. This
-    differs from the residual function proposed by \citeauthor{gill_azmy} but
-    the new form may be preferable as it directly contains information about
-    $\lambda$.
+    \vzero$ where $\vx^*$ is a root of the residual function. It is first
+    necessary to construct a residual function based on the \gls{nem} equations.
+    \citeauthor{qe2paper} propose a residual function that contains the residual
+    of  the \gls{nem} solution, $\vPhi_g$, and the absolute change in the
+    fundamental eigenvalue, $\lambda$, during the Newton iteration. This differs
+    from the residual function proposed by \citeauthor{gill_azmy} but the new
+    form may be preferable as it directly contains information about the
+    fundamental eigenvalue, $\lambda$.
     
-    The Newton step at the $m^{th}$ step can be described 
+    The $m^{th}$ Newton step can be described 
     \begin{equation}
       \label{eq:newton_step}
       \jacobian (\vx^m) \, \step^m = - \residual(\vx^m)
@@ -252,7 +249,7 @@
     \citeauthor{qe2paper} and the work by \citeauthor{gill_azmy}, the authors
     perform a study to determine an preferable choice of forcing term. The
     authors all determine that the Eisenstat-Walker forcing term is ideal.
-    However, $\eta_m = 10^{-1}$ provides equally good, and sometimes better
+    However, $\eta_m = 10^{-1}$ provides equally good and sometimes better
     results \cite{qe2paper,gill_azmy,jfnk_wielandt,ma784notes}. These results 
     indicate that both the Eisenstat-Walker forcing term and $\eta_m = 10^{-1}$
     perform similarly and such a study is unnecessary in the future.

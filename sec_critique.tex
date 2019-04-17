@@ -39,14 +39,14 @@
   \subsection{\texorpdfstring{$\dtilde$ Formulation}{D\textasciitilde \ Formulation}}
     \label{sec:dtilde_formulation}
 
-    A potentially significant challenge of the \gls{jfnk} solution method
-    presented by \citeauthor{qe2paper} is the solution method of the \gls{nem}
-    coefficients. Typically, the \gls{nem} coefficients, $a_{g,u,n}$, are not
-    solved directly and, instead, a $\dtilde$ term is calculated. Consider two
-    neighboring nodes, indexed $\ell$ and $\ell+1$. Then, using the \gls{nem}
-    coefficients calculated in only these two nodes, the current across the
-    intervening surface, $\current_g(u)$, can be calculated. A $\dtilde$ can be
-    calculated as
+    A significant challenge of the \gls{jfnk} solution method presented by
+    \citeauthor{qe2paper} is the solution method of the \gls{nem} coefficients.
+    Typically, the \gls{nem} coefficients, $a_{g,u,n}$, are not solved directly
+    and, instead, a $\dtilde$ term is calculated. Consider two neighboring
+    nodes, indexed $\ell$ and $\ell+1$. Then, using the \gls{nem} coefficients
+    calculated in only these two nodes, the current across the intervening
+    surface, $\current_g(u)$, can be calculated. A $\dtilde$ can be calculated
+    as
     \begin{equation}
       \label{eq:dtilde}
       \current_g(u) = 
@@ -81,9 +81,9 @@
     
     A final consideration for the $\dtilde$ formulation is the incorporation
     into existing multigroup neutron diffusion reactor simulation computer
-    programs \cite{casmo4,simulate3,mpact}. A majority of computer programs
-    developed to simulate nuclear reactors use a $\dtilde$ term whether it be
-    calculated using the \gls{nem} or an other method such as \gls{cmfd}. By
+    programs. A majority of computer programs developed to simulate nuclear
+    reactors use a $\dtilde$ term whether it be calculated using the \gls{nem}
+    or an other method such as \gls{cmfd} \cite{casmo4,simulate3,mpact}. By
     solving for the \gls{nem} coefficients themselves, the method proposed by
     \citeauthor{qe2paper} requires the development of an entirely new computer
     program.
@@ -97,7 +97,7 @@
     \subsubsection{Ragged Core}
 
       It almost goes without saying that solution time can be expected to be
-      strongly related to the number of solving variables. However,
+      directly related to the number of solving variables. However,
       \citeauthor{qe2paper} include unnecessary nodes in their simulation. The
       simulations presented are in the domain of a rectangular prism but
       standard reactor simulations are performed on a ``ragged core'' domain. In
