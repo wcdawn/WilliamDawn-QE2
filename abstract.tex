@@ -1,5 +1,39 @@
 \pdfbookmark[section]{Abstract}{toc}
 \begin{abstract}
-  My Abstract.
+
+  \gls{jfnk} methods promise a robust framework for solving nonlinear equations.
+  The \gls{jfnk} method provides $q$-quadratic convergence and only requires a
+  finite difference Jacobian-vector product rather than a full Jacobian.
+  However, the adoption of the \gls{jfnk} method in the simulation of nuclear
+  reactors has proven difficult due to computational complexity. As such, the
+  traditional \gls{pi} method is typically preferred to solve for the
+  fundamental eigenvalue and eigenvector of a reactor system.
+
+  In \citetitle{qe2paper}, authors \citeauthor{qe2paper} present an
+  implementation of the \gls{jfnk} method to solve the \gls{nem} equations. In
+  their method, the authors reduce the number of solution variables by employing
+  local-elimination and attempt to improve the efficiency of the Krylov solver
+  by preconditioning with a specially designed physics-based preconditioner.
+  This implementation of the \gls{jfnk} method is compared to a \gls{pi} method
+  and the authors conclude that ``the \gls{nem}\_\gls{jfnk} methods can greatly
+  improve the convergence rate and the computational efficiency''
+  \cite{qe2paper}.
+  
+  The claims by the authors are exaggerated and insufficient data is provided to
+  justify such claims. The claim of improved computational efficiency is based
+  on comparing the proposed \gls{jfnk} method to a suboptimal implementation of
+  the \gls{pi} method. Notably, the authors do not properly consider the
+  importance of the \gls{ws} and do not use a $\dtilde$ formulation of the
+  \gls{nem} equations. In their closing remarks, \citeauthor{qe2paper} also
+  claim that the proposed methods can be extended to multiphysics simulations
+  though other work suggests this is challenging, if at all feasible
+  \cite{caslJFNK}.
+
+  Ultimately, \citeauthor{qe2paper} present a comparison of suboptimal codes and
+  suggest that the \gls{jfnk} method is preferable because it has reduced
+  execution time. Such claims cannot be substantiated by the results presented.
+  It is essential to compare optimized codes before conclusions regarding
+  an improvement in methods can be made.
+
 \end{abstract}
 \glsresetall
