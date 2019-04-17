@@ -94,7 +94,7 @@
     \subsubsection{Local Elimination}
       \label{sec:local_elimination}
 
-      Recall the quantities of interest for this calculation are the fundamental
+      Recall the quantity of interest for this calculation is the fundamental
       eigenmode composed of eigenvalue, $\lambda$, and eigenvector,
       $\phi_g(\vr)$. The coefficients in \eref{eq:flux_expansion},
       \eref{eq:source_expansion}, and \eref{eq:leakage_expansion} are not
@@ -112,9 +112,8 @@
       introduced $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
       variable. This is an important and novel step of the reviewed work as the
       solution of \gls{nem} coefficients represents the bulk of the
-      computational time and the number of coefficients for each node, each
-      energy group, and each direction has been reduced from five to three
-      \cite{qe2paper}.
+      computational time and the number of coefficients required for solving the
+      \gls{nem} equations has been reduced \cite{qe2paper}.
 
       Finally, the \gls{nem} equations are solved to obtain currents, scalar
       fluxes, $a_{g,u,1-3}$, and $a_{g,u,2-4}$ in each node for each energy
@@ -148,10 +147,10 @@
     \subsubsection{Choice of Physics-Based Preconditioner}
 
       Ultimately, the \gls{nem} coefficients will be solved iteratively with a
-      Krylov solver. The wise choice of preconditioner can significantly reduce 
-      the number of Krylov iterations to solve a linear system and it can be
-      shown that if one preconditions a matrix with its inverse, the Krylov
-      method will converge in one iteration \cite{textbookkelley}. While
+      Krylov solver. The wise choice of preconditioner can significantly reduce
+      the number of Krylov iterations required to solve a linear system and it
+      can be shown that if one preconditions a matrix with its inverse, the
+      Krylov method will converge in one iteration \cite{textbookkelley}. While
       computing the matrix inverse would defeat the purpose of the Krylov
       method, this result indicates that the preconditioning operator is
       selected to approximate the matrix inverse.
@@ -234,13 +233,14 @@
       \| \residual(\vx^m) + \jacobian(\vx^m) \, \step^m \| \le 
         \eta_m \| \residual(\vx^m) \|
     \end{equation}
-    where $\eta_m$ is the forcing term. \citeauthor{qe2paper} investigated
-    solving \eref{eq:inexact_newton_condition} using \gls{gmres} and
-    \gls{bicgstab} Krylov methods and determined that \gls{bicgstab} performed
-    preferably. \eref{eq:inexact_newton_condition} is termed the inexact Newton
-    condition. It is known that the choice of forcing term, $\eta_m$, can
-    significantly effect the convergence rate of the \gls{jfnk}
-    \cite{textbookkelley}. Essentially, it is undesirable to ``over-solve''
+    where the tolerance $\eta_m$ is referred to as the forcing term.
+    \citeauthor{qe2paper} investigated solving
+    \eref{eq:inexact_newton_condition} using \gls{gmres} and \gls{bicgstab}
+    Krylov methods and determined that \gls{bicgstab} performed preferably.
+    \eref{eq:inexact_newton_condition} is termed the inexact Newton condition.
+    It is known that the choice of forcing term, $\eta_m$, can significantly
+    effect the convergence rate of the \gls{jfnk} \cite{textbookkelley}.
+    Essentially, it is undesirable to ``over-solve''
     \eref{eq:inexact_newton_condition}, especially during the initial Newton
     iterations.
 
@@ -258,8 +258,8 @@
 
     The $q$-quadratic convergence rate of the \gls{jfnk} method is what makes it
     desirable to implement. Therefore, it is important to compare the
-    convergence behavior of the \gls{jfnk} method to the currently common
-    \gls{pi} method.
+    convergence behavior of the \gls{jfnk} method to the traditional \gls{pi}
+    method.
 
     \subsubsection{Convergence of \glsentrylong{pi} Method}
       \label{sec:dominance_ratio}

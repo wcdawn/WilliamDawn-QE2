@@ -4,10 +4,10 @@
   The multigroup neutron diffusion equation has proven to be a useful tool for
   modeling for the neutron distribution in a typical nuclear reactor. With the
   development of the \gls{nem}, the model was made more accurate and
-  computational time was significantly decreased. The typical quantities of
+  computational time was significantly decreased. The typical quantity of
   interest in these reactor simulations is the fundamental mode of the
-  eigenvalue problem; that is, the largest eigenvalue and associated scalar flux
-  distribution.
+  eigenvalue problem; that is, the largest eigenvalue and associated eigenvector
+  which represents scalar flux distribution.
 
   Traditionally, the multigroup neutron diffusion equation and \gls{nem}
   equations have been solved using the \gls{pi} method. The \gls{pi} method is a
@@ -21,7 +21,7 @@
   finite difference approximate Jacobian-vector product. Due to the challenges
   of computing these quantities, the implementation of \gls{jfnk} methods for
   computing the fundamental mode to the multigroup neutron diffusion equation
-  remains an active area of research.
+  and \gls{nem} equations remains an active area of research.
 
   In \citetitle{qe2paper}, \citeauthor{qe2paper} explore an implementation of
   the \gls{jfnk} method that seeks to efficiently solve the \gls{nem} equations

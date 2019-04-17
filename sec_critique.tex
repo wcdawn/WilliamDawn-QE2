@@ -1,9 +1,9 @@
 \section{Critique}
 \label{sec:critique}
 
-  The primary motivation for this paper is to critique the article by
+  The primary motivation for this work is to critique the article by
   \citeauthor{qe2paper}. While there may be more to critique, the discussion
-  here focuses on the application of proposed the \gls{jfnk} to realistic
+  here focuses on the application of proposed the \gls{jfnk} method to realistic
   reactor simulation problems.
 
   \subsection{Verification and Validation}
@@ -24,10 +24,10 @@
   \subsection{Critical Boron Concentration Search}
 
     For the simulation of \glspl{pwr}, one is typically not interested in the
-    value of $\lambda$. Instead, the critical boron concentration, $B$, is
-    desired such that $\lambda=1.0$. While this may be a simple feature, the
-    authors have not demonstrated the ability of this new method to solve for
-    the critical boron concentration. In similar studies, the calculation of a
+    value of $\lambda$. Instead, the critical boron concentration is desired
+    such that $\lambda=1.0$. While this may be a simple feature, the authors
+    have not demonstrated the ability of this new method to solve for the
+    critical boron concentration. In similar studies, the calculation of a
     critical boron concentration has been performed using a \gls{jfnk}-like
     method but it required special tuning and consideration \cite{caslJFNK}. The
     typical method for calculating the critical boron concentration is related
@@ -60,9 +60,13 @@
     where $\current_g(u)$ is the current on the surface between the nodes,
     $\overline{\phi}_{g,u,\ell}$ is the node average scalar flux in node $\ell$,
     and $\dtilde$ is dimensionless. $\dtilde$ is now unique to a particular
-    surface and must be solved during every outer iteration as a non-linear
+    surface and must be solved during every outer iteration as a nonlinear
     calculation. The implementation of $\dtilde$ as in \eref{eq:dtilde} has been
-    demonstrated previously \cite{smith_nonlinear,palmtagThesis}.
+    demonstrated previously \cite{smith_nonlinear,palmtagThesis}. Note that all
+    demonstrations of the $\dtilde$ formulation and proofs relating to the
+    nonlinear iteration process are related to the \gls{pi} method. Implementing
+    the $\dtilde$ formulation with teh \gls{jfnk} method may present additional
+    challenges.
 
     Calculation of $\dtilde$ has several benefits compared to directly solving
     for the \gls{nem} coefficients. Originally, the form of \eref{eq:dtilde} and
@@ -120,8 +124,9 @@
       fissile material \cite{gehinThesis}. In the work by \citeauthor{qe2paper},
       the convergence of the quantities of interest, $\lambda$ and
       $\overline{\phi}$, cannot be inferred. Therefore, it is possible that the
-      \gls{pi} method may be spending many iterations in these nodes whereas the
-      \gls{jfnk} method would not experience such behavior.
+      \gls{pi} method may be spending many iterations solving for the scalar
+      flux in these unnecessary nodes whereas the \gls{jfnk} method would not
+      experience such behavior.
 
     \subsubsection{\glsentrylong{ws}}
     \label{sec:wielandt_shift}
