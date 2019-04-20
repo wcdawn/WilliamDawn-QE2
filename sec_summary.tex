@@ -13,9 +13,9 @@
       \label{eq:multigroup_diffusion}
       \grad \cdot \current_g(\vr) + \Sigma_{r,g}(\vr) \phi_g(\vr)= 
         \frac{\chi_g(\vr)}{\lambda} 
-        \sum_{g'=1}^{G} \nu\Sigma_{f,g'}(\vr) \, \phi_{g'}(\vr) + 
+        \sum_{g'=1}^{G} \nu\Sigma_{f,g'}(\vr) \phi_{g'}(\vr) + 
         \sum_{\substack{g'=1 \\ g' \ne g}}^{G} 
-        \Sigma_{s,g' \rightarrow g}(\vr) \, \phi_{g'}(\vr)
+        \Sigma_{s,g' \rightarrow g}(\vr) \phi_{g'}(\vr)
     \end{equation}
     where 
     \begin{conditions} % custom environment designed for this purpose
@@ -36,13 +36,13 @@
       G & total number of energy groups.
     \end{conditions}
 
-    The three-dimensional domain $\Omega$ can then be discretized into a
+    The three-dimensional domain, $\Omega$, can then be discretized into a
     structured grid of nodes. Next, the \gls{nem} is introduced. Fundamentally,
     the \gls{nem} projects the transverse integrated flux onto a set of basis
     functions. The transverse integrated multigroup neutron equation is given as
     \begin{equation}
       \label{eq:transverse_multigroup_diffusion}
-      \frac{d \, \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}} \,
+      \frac{d \, \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}}
         \phi_{g,u}(r) = Q_{g,u}(u) - L_{g,u}(u)
     \end{equation}
     where $u = x,\ y,\ z$ is a coordinate direction \cite{qe2paper}. The terms 
@@ -54,7 +54,7 @@
     current $\current_{g,u}$ is then approximated
     \begin{equation}
       \label{eq:current_approximation}
-      \current_{g,u} = - \overline{D_g} \, \frac{d \phi_{g,u}(u)}{du}
+      \current_{g,u}(u) = - \overline{D_g} \, \frac{d \phi_{g,u}(u)}{du}
     \end{equation}
     where $\overline{D_g}$ is the average value of the diffusion coefficient in
     the node.
@@ -84,12 +84,12 @@
     \begin{enumerate}
       \item flux continuity condition,
       \item current continuity condition,
-      \item nodal neutron balance (also $f_0$ weighted residual),
+      \item nodal neutron balance ($f_0$ weighted residual),
       \item $f_1$ weighted residual, and
       \item $f_2$ weighted residual.
     \end{enumerate}
     Special attention is paid to boundary conditions and these conditions 
-    replace the flux and current continuity equations.
+    replace the flux and current continuity equations on the problem boundary.
 
     \subsubsection{Local Elimination}
       \label{sec:local_elimination}
@@ -109,7 +109,7 @@
       further reduced as the odd coefficients can be expressed in terms of
       each other with similar results for the even coefficients. That is,
       instead of solving for $a_{g,u,1}$ and $a_{g,u,3}$, a new coefficient is
-      introduced $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
+      introduced: $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
       variable. This is an important and novel step of the reviewed work as the
       solution of \gls{nem} coefficients represents the bulk of the
       computational time and the number of coefficients required for solving the
@@ -148,9 +148,9 @@
 
       Ultimately, the \gls{nem} coefficients will be solved iteratively with a
       Krylov solver. The wise choice of preconditioner can significantly reduce
-      the number of Krylov iterations required to solve a linear system and it
-      can be shown that if one preconditions a matrix with its inverse, the
-      Krylov method will converge in one iteration \cite{textbookkelley}. While
+      the number of Krylov iterations required to solve a linear system. It can
+      be shown that if one preconditions a matrix with its inverse, the Krylov
+      method will converge in one iteration \cite{textbookkelley}. While
       computing the matrix inverse would defeat the purpose of the Krylov
       method, this result indicates that the preconditioning operator is
       selected to approximate the matrix inverse.
@@ -171,7 +171,7 @@
       \cite{jfnk_wielandt}.
 
       The use of a \gls{pi} preconditioner was not investigated by
-      \citeauthor{qe2paper}. Instead, the authors design a new preconditioner
+      \citeauthor{qe2paper}. Instead, the authors designed a new preconditioner
       based on the data available during the \gls{nem} iterations. Special
       attention is also paid to ensure the preconditioner can be solved using
       the \gls{tdma} and \gls{adi} methods. These methods are among the fastest
@@ -222,7 +222,8 @@
     \end{equation}
     where $\vv$ is the direction (typically $\step^m$) and $\epsilon$ is the
     finite difference step size. Typically, $\epsilon$ is on the order of
-    machine precision, $\epsilon_{mach} \approx 10^{-16}$
+    the square-root of machine precision, 
+    $\sqrt{\epsilon_{mach}} \approx 10^{-8}$
     \cite{qe2paper,gill_azmy,textbookkelley}. Since the Jacobian has been
     replaced by a directional derivative, the method is termed Jacobian-Free.
 
@@ -239,7 +240,7 @@
     Krylov methods and determined that \gls{bicgstab} performed preferably.
     \eref{eq:inexact_newton_condition} is termed the inexact Newton condition.
     It is known that the choice of forcing term, $\eta_m$, can significantly
-    effect the convergence rate of the \gls{jfnk} \cite{textbookkelley}.
+    effect the convergence rate of the \gls{jfnk} method \cite{textbookkelley}.
     Essentially, it is undesirable to ``over-solve''
     \eref{eq:inexact_newton_condition}, especially during the initial Newton
     iterations.
@@ -302,7 +303,7 @@
       It has been demonstrated that the dominance ratio of the multigroup
       neutron diffusion equation has little effect on the convergence rate when
       the equations are solved using the \gls{jfnk} method \cite{gill_azmy}.
-      This is expected as the convergence of the \gls{jfnk} method is not
+      This is expected as the convergence rate of the \gls{jfnk} method is not
       related to the eigenvalues of the operator, but instead is related to the
       properties of the Jacobian including its Lipschitz continuity
       \cite{textbookkelley}. These results indicate that the \gls{ws} would have
