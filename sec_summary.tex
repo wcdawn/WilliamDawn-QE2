@@ -47,11 +47,11 @@
     \end{equation}
     where $u = x,\ y,\ z$ is a coordinate direction \cite{qe2paper}. The terms 
     $Q_{g,u}(u)$ and $L_{g,u}(u)$ represent the transverse integrated neutron
-    source and transverse leakages respectively. Note, in
-    \eref{eq:transverse_multigroup_diffusion} that the node indices (i.e.
-    $i,j,k$) have been omitted and $\overline{\Sigma_{r,g}}$ represents the
-    average value of $\Sigma_{r,g}(\vr)$ in the node. The transverse integrated
-    current $\current_{g,u}$ is then approximated
+    source and transverse leakages respectively. Note that in
+    \eref{eq:transverse_multigroup_diffusion}, the node indices
+    (i.e.~$i,j,k$) have been omitted and $\overline{\Sigma_{r,g}}$ represents
+    the average value of $\Sigma_{r,g}(\vr)$ in the node. The transverse
+    integrated current $\current_{g,u}$ is then approximated
     \begin{equation}
       \label{eq:current_approximation}
       \current_{g,u}(u) = - \overline{D_g} \, \frac{d \phi_{g,u}(u)}{du}
@@ -116,8 +116,8 @@
       \gls{nem} equations has been reduced \cite{qe2paper}.
 
       Finally, the \gls{nem} equations are solved to obtain currents, scalar
-      fluxes, $a_{g,u,1-3}$, and $a_{g,u,2-4}$ in each node for each energy
-      group. The resulting solution vector, $\vPhi_g$, can be written 
+      fluxes, $a_{g,u,1-3}$, and $a_{g,u,2-4}$. The resulting solution vector,
+      $\vPhi_g$, can be written 
       \begin{equation}
         \label{eq:solution_vector}
         \vPhi_g =
@@ -140,9 +140,9 @@
       groups. Note that the \gls{nem} coefficients and neutron current must be
       solved in each spatial direction. Typically, solving for the \gls{nem}
       coefficients themselves is not preferred as the values themselves are not
-      quantities of interest.  The preferred implementation computes a modified
-      diffusion coefficient, $\dtilde$, and will be discussed in
-      \sref{sec:dtilde_formulation}.
+      quantities of interest.  The preferred \gls{cmfd} implementation computes
+      a modified diffusion coefficient, $\dtilde$, and will be discussed in
+      \sref{sec:cmfd_formulation}.
 
     \subsubsection{Choice of Physics-Based Preconditioner}
 
@@ -162,7 +162,7 @@
       be applicable to the \gls{nem} equations. Preconditioners investigated
       include the diffusion operator, incomplete Cholesky factorization, the
       diffusion-fission operator, and preconditioning with a few \glspl{pi}. The
-      results of the preconditioner study indicate that preconditioning with
+      results of the preconditioner study indicates that preconditioning with
       approximately five \glspl{pi} provided the fastest convergence of the
       \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
       similar convergence rate but requires additional and expensive matrix
@@ -200,7 +200,7 @@
     The $m^{th}$ Newton step can be described 
     \begin{equation}
       \label{eq:newton_step}
-      \jacobian (\vx^m) \, \step^m = - \residual(\vx^m)
+      \jacobian (\vx^m) \cdot \step^m = - \residual(\vx^m)
     \end{equation}
     where $\jacobian(\vx^m)$ is the Jacobian of $\residual(\vx^m)$ and 
     $\step^m$ is the Newton step. Then, the Newton step proceeds as
@@ -217,13 +217,12 @@
     directional derivative can be written
     \begin{equation}
       \label{eq:dirder}
-      \jacobian(\vx^m) \, \vv \approx \frac{\residual(\vx^m + \epsilon \vv) - 
+      \jacobian(\vx^m) \cdot \vv \approx \frac{\residual(\vx^m + \epsilon \vv) - 
         \residual(\vx^m)}{\epsilon}
     \end{equation}
-    where $\vv$ is the direction (typically $\step^m$) and $\epsilon$ is the
-    finite difference step size. Typically, $\epsilon$ is on the order of
-    the square-root of machine precision, 
-    $\sqrt{\epsilon_{mach}} \approx 10^{-8}$
+    where $\vv$ is the direction and $\epsilon$ is the finite difference step
+    size. Typically, $\epsilon$ is on the order of the square-root of machine
+    precision, $\sqrt{\epsilon_{mach}} \approx 10^{-8}$
     \cite{qe2paper,gill_azmy,textbookkelley}. Since the Jacobian has been
     replaced by a directional derivative, the method is termed Jacobian-Free.
 
@@ -248,7 +247,7 @@
     The Eisenstat-Walker forcing term is a standard choice for $\eta_m$ and has
     been shown to work well \cite{qe2paper,gill_azmy}. In both the work by
     \citeauthor{qe2paper} and the work by \citeauthor{gill_azmy}, the authors
-    perform a study to determine an preferable choice of forcing term. The
+    perform a study to determine a preferable choice of forcing term. The
     authors all determine that the Eisenstat-Walker forcing term is ideal.
     However, $\eta_m = 10^{-1}$ provides equally good and sometimes better
     results \cite{qe2paper,gill_azmy,jfnk_wielandt,ma784notes}. These results 
@@ -278,15 +277,15 @@
       \end{equation}
       where $\lambda_0 = \lambda$ is the fundamental eigenvalue and $\lambda_1$
       is the next largest eigenvalue \cite{my_ms_thesis}. The \gls{pi} method
-      converges $q$-linearly and the dominance ratio is the leading coefficient
-      in the convergence behavior. For the multigroup neutron diffusion and
+      converges linearly and the dominance ratio is the leading coefficient in 
+      the convergence behavior. For the multigroup neutron diffusion and
       \gls{nem} equations, $d$ is guaranteed to be less than one and smaller
       values of $d$ result in faster convergence \cite{nakamura}. For typical
       reactor simulations, $d > 0.9$ and often $d > 0.95$ implying convergence
       is slow, often requiring hundreds of iterations.
 
       The typical approach to address the challenge of large dominance ratios is
-      the \gls{ws} \cite{gehinThesis}. Briefly, the \gls{ws} subtracts a portion
+      the \gls{ws}~\cite{gehinThesis}. Briefly, the \gls{ws} subtracts a portion
       of the fission source from both sides of the equation. It can be shown
       that the dominance ratio is decreased \textit{significantly} such that $d
       \approx 0.5$ may be expected. It is common for the \gls{ws} to speedup 
@@ -310,5 +309,5 @@
       little to no effect on the \gls{jfnk} method. However,
       \citeauthor{qe2paper} indicate in their concluding remarks that they
       expect the \gls{ws} to ``improve the efficiency further'' and this is
-      inaccurate \cite{qe2paper}.
+      inaccurate~\cite{qe2paper}.
       

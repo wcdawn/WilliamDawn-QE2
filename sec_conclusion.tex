@@ -2,8 +2,8 @@
 \label{sec:conclusion}
 
   In \citetitle{qe2paper}, \citeauthor{qe2paper} conclude that the proposed
-  method of solving the \gls{nem} equations with the \gls{jfnk} method after
-  performing local elimination and using the physics-based preconditioner
+  implementation of solving the \gls{nem} equations with the \gls{jfnk} method
+  after performing local elimination and using the physics-based preconditioner
   provides improved convergence rate and reduced computation time compared to
   their implementation of the \gls{pi} method. It is difficult to argue with
   these results as presented. However, \sref{sec:critique} has shown that it is
@@ -12,14 +12,15 @@
   \citeauthor{qe2paper} to broader applications of the \gls{jfnk} method for
   solving the \gls{nem} equations.
 
-  The first step for better interpreting the results presented is to compare the
+  A first step for better interpreting the results presented is to compare the
   \gls{jfnk} method to a \gls{pi} method using the \gls{ws} as in the work by
   \citeauthor{jfnk_wielandt}. It would also be useful to investigate
   preconditioning with a few \glspl{pi} as this has been demonstrated to be the
-  preferable preconditioning by others \cite{gill_azmy,jfnk_wielandt}. Finally,
-  the \gls{nem} should be implemented in the $\dtilde$ formulation to improve
-  computational efficiency and allow for compatibility with existing
-  production-quality computer programs \cite{palmtagThesis,smith_nonlinear}.
+  preferable preconditioning by others \cite{gill_azmy,jfnk_wielandt}.
+  Additionally, the \gls{nem} should be implemented in the \gls{cmfd}
+  formulation to investigate improved computational efficiency and allow for
+  compatibility with existing production-quality computer programs 
+  \cite{palmtagThesis,smith_nonlinear}.
 
   In their concluding remarks, \citeauthor{qe2paper} claim that their method
   will be extended to ``improve the computational efficiency for large-scale

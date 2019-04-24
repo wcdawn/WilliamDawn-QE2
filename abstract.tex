@@ -2,12 +2,12 @@
 \begin{abstract}
 
   \gls{jfnk} methods promise a robust framework for solving nonlinear equations.
-  The \gls{jfnk} methods converges $q$-quadratically and only require a finite
+  The \gls{jfnk} methods converge $q$-quadratically and only require a finite
   difference Jacobian-vector product rather than a full Jacobian.  However, the
   adoption of the \gls{jfnk} method in the simulation of nuclear reactors has
   proven difficult due to computational complexity. As such, the traditional
-  \gls{pi} method is typically preferred to solve for the fundamental eigenvalue
-  and eigenvector of a reactor system.
+  \gls{pi} method is typically preferred to solve for the fundamental eigenmode
+  of a reactor system.
 
   In \citetitle{qe2paper}, authors \citeauthor{qe2paper} present an
   implementation of the \gls{jfnk} method to solve the \gls{nem} equations. In
@@ -23,7 +23,7 @@
   provided to justify such claims. The claim of improved computational
   efficiency is based on comparing the proposed \gls{jfnk} method to a
   suboptimal implementation of the \gls{pi} method. Notably, the authors do not
-  properly consider the importance of the \gls{ws} and do not use a $\dtilde$
+  properly consider the importance of the \gls{ws} and do not use a \gls{cmfd}
   formulation of the \gls{nem} equations. In their closing remarks,
   \citeauthor{qe2paper} also claim that the proposed methods can be extended to
   multiphysics simulations though other work suggests this is challenging, if at
