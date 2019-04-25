@@ -42,7 +42,7 @@
     functions. The transverse integrated multigroup neutron equation is given as
     \begin{equation}
       \label{eq:transverse_multigroup_diffusion}
-      \frac{d \, \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}}
+      \frac{d \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}}
         \phi_{g,u}(r) = Q_{g,u}(u) - L_{g,u}(u)
     \end{equation}
     where $u = x,\ y,\ z$ is a coordinate direction \cite{qe2paper}. The terms 
@@ -144,47 +144,8 @@
       a modified diffusion coefficient, $\dtilde$, and will be discussed in
       \sref{sec:cmfd_formulation}.
 
-    \subsubsection{Choice of Physics-Based Preconditioner}
-
-      Ultimately, the \gls{nem} coefficients will be solved iteratively with a
-      Krylov solver. The wise choice of preconditioner can significantly reduce
-      the number of Krylov iterations required to solve a linear system. It can
-      be shown that if one preconditions a matrix with its inverse, the Krylov
-      method will converge in one iteration \cite{textbookkelley}. While
-      computing the matrix inverse would defeat the purpose of the Krylov
-      method, this result indicates that the preconditioning operator is
-      selected to approximate the matrix inverse.
-
-      An extensive review of the choice of preconditioner in \gls{jfnk}
-      solutions to the multigroup neutron diffusion equation has been presented
-      elsewhere \cite{gill_azmy}. It is expected that the results of the
-      preconditioner study for the multigroup neutron diffusion equation should
-      be applicable to the \gls{nem} equations. Preconditioners investigated
-      include the diffusion operator, incomplete Cholesky factorization, the
-      diffusion-fission operator, and preconditioning with a few \glspl{pi}. The
-      results of the preconditioner study indicates that preconditioning with
-      approximately five \glspl{pi} provided the fastest convergence of the
-      \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
-      similar convergence rate but requires additional and expensive matrix
-      calculations. A \gls{pi} preconditioner was also investigated in work by
-      \citeauthor{jfnk_wielandt} and similar performance was reported
-      \cite{jfnk_wielandt}.
-
-      The use of a \gls{pi} preconditioner was not investigated by
-      \citeauthor{qe2paper}. Instead, the authors designed a new preconditioner
-      based on the data available during the \gls{nem} iterations. Special
-      attention is also paid to ensure the preconditioner can be solved using
-      the \gls{tdma} and \gls{adi} methods. These methods are among the fastest
-      numerical matrix solution techniques available. The authors incorporate
-      information in the preconditioner from the \gls{nem} equations,
-      group-to-group scattering, and transverse leakage contributions. The
-      construction of the preconditioner appears to be computationally
-      expensive. Unfortunately, \citeauthor{qe2paper} do not compare their
-      preconditioner to any other preconditioner or even a case without a
-      preconditioner. Therefore, it is impossible to determine the relative
-      computational efficiency of this preconditioning method.
-
   \subsection{\glsentrylong{jfnk} Theory and Inexact Newton Condition}
+    \label{sec:jfnk_theory}
 
     The \gls{jfnk} method begins with Newton's method. Newton's method provides
     a framework to find the root of a residual function as $\residual(\vx^*) =
@@ -253,6 +214,47 @@
     results \cite{qe2paper,gill_azmy,jfnk_wielandt,ma784notes}. These results 
     indicate that both the Eisenstat-Walker forcing term and $\eta_m = 10^{-1}$
     perform similarly and such a study is unnecessary in the future.
+
+    \subsubsection{Choice of Physics-Based Preconditioner}
+
+      The inexact Newton condition (discussed in
+      \sref{sec:jfnk_theory}) is solved iteratively with a Krylov solver.
+      The wise choice of preconditioner can significantly reduce the number of
+      Krylov iterations required to solve a linear system. It can be shown that
+      if one preconditions a matrix with its inverse, the Krylov method will
+      converge in one iteration \cite{textbookkelley}. While computing the
+      matrix inverse would defeat the purpose of the Krylov method, this result
+      indicates that the preconditioning operator is selected to approximate the
+      matrix inverse.
+
+      An extensive review of the choice of preconditioner in \gls{jfnk}
+      solutions to the multigroup neutron diffusion equation has been presented
+      elsewhere \cite{gill_azmy}. It is expected that the results of the
+      preconditioner study for the multigroup neutron diffusion equation should
+      be applicable to the \gls{nem} equations. Preconditioners investigated
+      include the diffusion operator, incomplete Cholesky factorization, the
+      diffusion-fission operator, and preconditioning with a few \glspl{pi}. The
+      results of the preconditioner study indicates that preconditioning with
+      approximately five \glspl{pi} provided the fastest convergence of the
+      \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
+      similar convergence rate but requires additional and expensive matrix
+      calculations. A \gls{pi} preconditioner was also investigated in work by
+      \citeauthor{jfnk_wielandt} and similar performance was reported
+      \cite{jfnk_wielandt}.
+
+      The use of a \gls{pi} preconditioner was not investigated by
+      \citeauthor{qe2paper}. Instead, the authors designed a new preconditioner
+      based on the data available during the \gls{nem} iterations. Special
+      attention is also paid to ensure the preconditioner can be solved using
+      the \gls{tdma} and \gls{adi} methods. These methods are among the fastest
+      numerical matrix solution techniques available. The authors incorporate
+      information in the preconditioner from the \gls{nem} equations,
+      group-to-group scattering, and transverse leakage contributions. The
+      construction of the preconditioner appears to be computationally
+      expensive. Unfortunately, \citeauthor{qe2paper} do not compare their
+      preconditioner to any other preconditioner or even a case without a
+      preconditioner. Therefore, it is impossible to determine the relative
+      computational efficiency of this preconditioning method.
 
   \subsection{Convergence Rate Consideration}
 
