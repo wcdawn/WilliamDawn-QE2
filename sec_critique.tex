@@ -61,7 +61,7 @@
     $\overline{\phi}_{g,u,\ell}$ is the node average scalar flux in node $\ell$,
     and $\dtilde$ is dimensionless. $\dtilde$ is now unique to a particular
     surface and must be solved during every outer iteration as a nonlinear
-    calculation. The implementation of $\dtilde$ as in \eref{eq:dtilde} has been
+    update. The implementation of $\dtilde$ as in \eref{eq:dtilde} has been
     demonstrated previously \cite{smith_nonlinear,palmtagThesis}. Note that all
     demonstrations of the \gls{cmfd} formulation and proofs relating to the
     nonlinear iteration process are related to the \gls{pi} method. Implementing
@@ -74,15 +74,20 @@
     to save on storage. In the nonlinear iteration method, the \gls{nem}
     coefficients need not be stored. This \gls{cmfd} formulation would reduce
     the number of solution variables from ${10 \times N \times G}$ to 
-    ${N \times G}$.
+    ${N \times G}$. The bulk of the computation in each Newton iteration is
+    spent in the Krylov solver to solve the inexact Newton condition from
+    \eref{eq:inexact_newton_condition}. Reducing the dimension of the linear
+    operator by implementing a \gls{cmfd} formulation will therefore reduce the
+    computational expense of the matrix-vector products required by the Krylov
+    solver.
 
     A final consideration for the \gls{cmfd} formulation is the incorporation
     into existing reactor simulation computer programs. A majority of computer
     programs developed to simulate nuclear reactors use a $\dtilde$ term whether
-    it be calculated using the \gls{nem} or another method such as \gls{dsa}
-    \cite{casmo4,simulate3,mpact}. By solving for the \gls{nem} coefficients
-    themselves, the method proposed by \citeauthor{qe2paper} requires the
-    development of an entirely new computer program.
+    it be calculated using the \gls{nem} or another, higher-order, method such
+    as \gls{dsa} \cite{casmo4,simulate3,mpact}. By solving for the \gls{nem}
+    coefficients themselves, the method proposed by \citeauthor{qe2paper}
+    requires the development of an entirely new computer program.
 
   \subsection{Comparison to Production-Quality Computer Programs}
 

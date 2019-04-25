@@ -7,12 +7,13 @@
   computational time was significantly decreased. The typical quantity of
   interest in these reactor simulations is the fundamental mode of the
   eigenvalue problem; that is, the largest eigenvalue and associated eigenvector
-  which represents scalar flux distribution.
+  which represent the effective neutron multiplication factor and scalar flux
+  distribution respectively.
 
   Traditionally, the multigroup neutron diffusion equation and \gls{nem}
   equations have been solved using the \gls{pi} method. The \gls{pi} method is a
   fixed-point method useful for solving eigenvalue problems. It is a linear
-  iteration method and converges to the fundamental eigenmode linearly.
+  iteration method and converges to the fundamental eigenmode at a linear rate.
   Recently, the use of \gls{jfnk} methods has been investigated in an attempt to
   reduce the computing time required to solve the \gls{nem} equations.
   \gls{jfnk} methods are attractive because when the iteration terminates, the
@@ -25,11 +26,12 @@
 
   In \citetitle{qe2paper}, \citeauthor{qe2paper} explore an implementation of
   the \gls{jfnk} method that seeks to efficiently solve the \gls{nem} equations
-  for the fundamental eigenmode. \sref{sec:summary} provides a brief summary of
-  this work and a few considerations for solving the \gls{nem} equations using
-  the \gls{jfnk} method are provided. Then, \sref{sec:critique} critiques the
+  for the fundamental eigenmode. \sref{sec:summary} briefly summarizes this work
+  and a few considerations for solving the \gls{nem} equations using the
+  \gls{jfnk} method are provided. Then, \sref{sec:critique} critiques the
   authors' implementation with a focus on the applicability of the proposed
   method to realistic nuclear reactor simulations. Finally,
   \sref{sec:conclusion} provides a few conclusions based on the work by
-  \citeauthor{qe2paper} and some considerations for future implementation of the 
-  \gls{jfnk} method to solve the \gls{nem} equations.
+  \citeauthor{qe2paper} and some considerations for future implementation of the
+  \gls{jfnk} method to solve the \gls{nem} equations in nuclear reactor
+  simulations.
