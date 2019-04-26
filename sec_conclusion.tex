@@ -28,18 +28,19 @@
   \cite{qe2paper}. This may seem like a straightforward extension, but a new
   residual function and Jacobian approximation will likely be required.
 
-  The authors' claim is extremely bold given both the omission of important
-  results and other publications in the field. Specifically,
-  \citeauthor{caslJFNK} investigated this exact application of \gls{jfnk} to
-  large-scale multiphysics simulations. Such an application required significant
-  work in the formation of the Jacobian including constructing approximations of
-  temperature derivatives of cross sections. These cross section derivatives
-  were specific to a particular type of reactor (\glspl{pwr}) but
-  \citeauthor{qe2paper} attempt to simulate both \glspl{pwr} and pebble bed
-  reactor designs. Succinctly, in full reactor multiphysics simulations, it was
-  determined that without the calculation of cross section derivatives, the
-  \gls{jfnk} method was unacceptable as it required a burdensome amount of cross
-  section processing time during the simulation \cite{caslJFNK}.
+  The authors' claim of incorporating multiphysics effects is extremely bold
+  given both the omission of important results and other publications in the
+  field. Specifically, \citeauthor{caslJFNK} investigated this exact application
+  of \gls{jfnk} to large-scale multiphysics simulations. Such an application
+  required significant work in the formation of the Jacobian including
+  constructing approximations of temperature derivatives of cross sections.
+  These cross section derivatives were specific to a particular type of reactor
+  (\glspl{pwr}) but \citeauthor{qe2paper} attempt to simulate both \glspl{pwr}
+  and pebble bed reactor designs. Succinctly, in reactor multiphysics
+  simulations, it was determined that without the calculation of cross section
+  derivatives, the \gls{jfnk} method was unacceptable as it required a
+  burdensome amount of cross section processing time during the simulation
+  \cite{caslJFNK}.
 
   The results of \citeauthor{caslJFNK} are not the end of the narrative. 
   Applying the \gls{jfnk} method to the \gls{nem} equations may be useful for

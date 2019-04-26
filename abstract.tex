@@ -7,12 +7,12 @@
   adoption of the \gls{jfnk} method in the simulation of nuclear reactors has
   proven difficult due to computational complexity. As such, the traditional
   \gls{pi} method is typically preferred to solve for the fundamental eigenmode
-  of a reactor system.
+  of a nuclear reactor system.
 
   In \citetitle{qe2paper}, authors \citeauthor{qe2paper} present an
   implementation of the \gls{jfnk} method to solve the \gls{nem} equations. In
-  their method, the authors reduce the number of solution variables by employing
-  local-elimination and improve the efficiency of the Krylov solver by
+  their implementation, the authors reduce the number of solution variables by
+  employing local-elimination and improve the efficiency of the Krylov solver by
   preconditioning with a specially designed, physics-based, preconditioner. This
   implementation of the \gls{jfnk} method is compared to a \gls{pi} method and
   the authors conclude that ``the \gls{nem}\_\gls{jfnk} methods can greatly

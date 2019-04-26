@@ -47,7 +47,7 @@
     \end{equation}
     where $u = x,\ y,\ z$ is a coordinate direction \cite{qe2paper}. The terms 
     $Q_{g,u}(u)$ and $L_{g,u}(u)$ represent the transverse integrated neutron
-    source and transverse leakages respectively. Note that in
+    source and transverse leakage respectively. Note that in
     \eref{eq:transverse_multigroup_diffusion}, the node indices
     (i.e.~$i,j,k$) have been omitted and $\overline{\Sigma_{r,g}}$ represents
     the average value of $\Sigma_{r,g}(\vr)$ in the node. The transverse
@@ -91,58 +91,58 @@
     Special attention is paid to boundary conditions and these conditions 
     replace the flux and current continuity equations on the problem boundary.
 
-    \subsubsection{Local Elimination}
-      \label{sec:local_elimination}
+  \subsection{Local Elimination}
+    \label{sec:local_elimination}
 
-      Recall the quantity of interest for this calculation is the fundamental
-      eigenmode composed of eigenvalue, $\lambda$, and eigenvector,
-      $\phi_g(\vr)$. The coefficients in \eref{eq:flux_expansion},
-      \eref{eq:source_expansion}, and \eref{eq:leakage_expansion} are not
-      desired directly, but must be solved in order to obtain the quantities of
-      interest. It has been previously demonstrated that all coefficients need
-      not be solved simultaneously which allows for the reduction of the
-      dimensionality of the problem. The odd and even coefficients can be solved
-      separately as a result of the five solution equations selected
-      \cite{gehinThesis}.
-      
-      \citeauthor{qe2paper} then show that the number of coefficients can be
-      further reduced as the odd coefficients can be expressed in terms of
-      each other with similar results for the even coefficients. That is,
-      instead of solving for $a_{g,u,1}$ and $a_{g,u,3}$, a new coefficient is
-      introduced: $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
-      variable. This is an important and novel step of the reviewed work as the
-      solution of \gls{nem} coefficients represents the bulk of the
-      computational time and the number of coefficients required for solving the
-      \gls{nem} equations has been reduced \cite{qe2paper}.
+    Recall the quantity of interest for this calculation is the fundamental
+    eigenmode composed of eigenvalue, $\lambda$, and eigenvector,
+    $\phi_g(\vr)$. The coefficients in \eref{eq:flux_expansion},
+    \eref{eq:source_expansion}, and \eref{eq:leakage_expansion} are not
+    desired directly, but must be solved in order to obtain the quantity of
+    interest. It has been previously demonstrated that all coefficients need
+    not be solved simultaneously which allows for the reduction of the
+    dimensionality of the problem. The odd and even coefficients can be solved
+    separately as a result of the five solution equations selected
+    \cite{gehinThesis}.
+    
+    \citeauthor{qe2paper} then show that the number of coefficients can be
+    further reduced as the odd coefficients can be expressed in terms of
+    each other with similar results for the even coefficients. That is,
+    instead of solving for $a_{g,u,1}$ and $a_{g,u,3}$, a new coefficient is
+    introduced: $a_{g,u,1-3}$. Similarly, $a_{g,u,2-4}$ becomes a solution
+    variable. This is an important and novel step of the reviewed work as the
+    solution of \gls{nem} coefficients represents the bulk of the
+    computational time and the number of coefficients required for solving the
+    \gls{nem} equations has been reduced \cite{qe2paper}.
 
-      Finally, the \gls{nem} equations are solved to obtain currents, scalar
-      fluxes, $a_{g,u,1-3}$, and $a_{g,u,2-4}$. The resulting solution vector,
-      $\vPhi_g$, can be written 
-      \begin{equation}
-        \label{eq:solution_vector}
-        \vPhi_g =
-        \begin{pmatrix}
-          \current_{g,x,+} \\
-          \current_{g,y,+} \\
-          \vspace{8pt}
-          \current_{g,z,+} \\
-          \overline{\phi_g} \\
-          a_{g,x,1-2} \\
-          a_{g,y,1-2} \\
-          a_{g,z,1-2} \\
-          a_{g,x,2-4} \\
-          a_{g,y,2-4} \\
-          a_{g,z,2-4}
-        \end{pmatrix}
-      \end{equation}
-      and the total number of solving variables is $10 \times N \times G$ where
-      $N$ is the total number of nodes and $G$ is the total number of energy
-      groups. Note that the \gls{nem} coefficients and neutron current must be
-      solved in each spatial direction. Typically, solving for the \gls{nem}
-      coefficients themselves is not preferred as the values themselves are not
-      quantities of interest.  The preferred \gls{cmfd} implementation computes
-      a modified diffusion coefficient, $\dtilde$, and will be discussed in
-      \sref{sec:cmfd_formulation}.
+    Finally, the \gls{nem} equations are solved to obtain currents, scalar
+    fluxes, $a_{g,u,1-3}$, and $a_{g,u,2-4}$. The resulting solution vector,
+    $\vPhi_g$, can be written 
+    \begin{equation}
+      \label{eq:solution_vector}
+      \vPhi_g =
+      \begin{pmatrix}
+        \current_{g,x,+} \\
+        \current_{g,y,+} \\
+        \vspace{8pt}
+        \current_{g,z,+} \\
+        \overline{\phi_g} \\
+        a_{g,x,1-2} \\
+        a_{g,y,1-2} \\
+        a_{g,z,1-2} \\
+        a_{g,x,2-4} \\
+        a_{g,y,2-4} \\
+        a_{g,z,2-4}
+      \end{pmatrix}
+    \end{equation}
+    and the total number of solving variables is $10 \times N \times G$ where
+    $N$ is the total number of nodes and $G$ is the total number of energy
+    groups. Note that the \gls{nem} coefficients and neutron current must be
+    solved in each spatial direction. Typically, solving for the \gls{nem}
+    coefficients themselves is not preferred as the values themselves are not
+    quantities of interest.  The preferred \gls{cmfd} implementation computes
+    a modified diffusion coefficient, $\dtilde$, and will be discussed in
+    \sref{sec:cmfd_formulation}.
 
   \subsection{\glsentrylong{jfnk} Theory and Inexact Newton Condition}
     \label{sec:jfnk_theory}
@@ -191,7 +191,7 @@
     using a Krylov method as
     \begin{equation}
       \label{eq:inexact_newton_condition}
-      \| \residual(\vx^m) + \jacobian(\vx^m) \, \step^m \| \le 
+      \| \residual(\vx^m) + \jacobian(\vx^m) \cdot \step^m \| \le 
         \eta_m \| \residual(\vx^m) \|
     \end{equation}
     where the tolerance $\eta_m$ is referred to as the forcing term.
@@ -210,51 +210,65 @@
     \citeauthor{qe2paper} and the work by \citeauthor{gill_azmy}, the authors
     perform a study to determine a preferable choice of forcing term. The
     authors all determine that the Eisenstat-Walker forcing term is ideal.
-    However, $\eta_m = 10^{-1}$ provides equally good and sometimes better
+    However, $\eta_m = 10^{-1}$ provides equally well and sometimes better
     results \cite{qe2paper,gill_azmy,jfnk_wielandt,ma784notes}. These results 
     indicate that both the Eisenstat-Walker forcing term and $\eta_m = 10^{-1}$
     perform similarly and such a study is unnecessary in the future.
 
-    \subsubsection{Choice of Physics-Based Preconditioner}
+  \subsection{Choice of Physics-Based Preconditioner}
 
-      The inexact Newton condition (discussed in
-      \sref{sec:jfnk_theory}) is solved iteratively with a Krylov solver.
-      The wise choice of preconditioner can significantly reduce the number of
-      Krylov iterations required to solve a linear system. It can be shown that
-      if one preconditions a matrix with its inverse, the Krylov method will
-      converge in one iteration \cite{textbookkelley}. While computing the
-      matrix inverse would defeat the purpose of the Krylov method, this result
-      indicates that the preconditioning operator is selected to approximate the
-      matrix inverse.
+    The inexact Newton condition (discussed in
+    \sref{sec:jfnk_theory}) is solved iteratively with a Krylov solver.
+    The wise choice of preconditioner can significantly reduce the number of
+    Krylov iterations required to solve a linear system. It can be shown that
+    if one preconditions a matrix with its inverse, the Krylov method will
+    converge in one iteration \cite{textbookkelley}. While computing the
+    matrix inverse would defeat the purpose of the Krylov method, this result
+    indicates that the preconditioning operator is selected to approximate the
+    matrix inverse.
 
-      An extensive review of the choice of preconditioner in \gls{jfnk}
-      solutions to the multigroup neutron diffusion equation has been presented
-      elsewhere \cite{gill_azmy}. It is expected that the results of the
-      preconditioner study for the multigroup neutron diffusion equation should
-      be applicable to the \gls{nem} equations. Preconditioners investigated
-      include the diffusion operator, incomplete Cholesky factorization, the
-      diffusion-fission operator, and preconditioning with a few \glspl{pi}. The
-      results of the preconditioner study indicates that preconditioning with
-      approximately five \glspl{pi} provided the fastest convergence of the
-      \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
-      similar convergence rate but requires additional and expensive matrix
-      calculations. A \gls{pi} preconditioner was also investigated in work by
-      \citeauthor{jfnk_wielandt} and similar performance was reported
-      \cite{jfnk_wielandt}.
+    \citeauthor{qe2paper} investigate only left-preconditioning. The 
+    left-preconditioned form of the inexact Newton condition can be written
+    \begin{equation}
+      \label{eq:left_precondition}
+      \| \mm_L^{-1} \residual(\vx^m) + \mm_L^{-1} \left( \jacobian(\vx^m)
+        \cdot \step^m \right) \| \le \eta_m \| \mm_L^{-1} \residual(\vx^m) \|
+    \end{equation}
+    where $\mm_L$ is the left-preconditioning operator. Note that in
+    \eref{eq:left_precondition}, the residual that is reduced during a Krylov
+    iteration is not directly related to the residual $\residual(\vx^m)$.
+    Typically, this is not a problem. Right-preconditioning can also be
+    considered but is not investigated in the proposed implementation.
+    \citeauthor{gill_azmy} investigate both left- and right-preconditioning.
 
-      The use of a \gls{pi} preconditioner was not investigated by
-      \citeauthor{qe2paper}. Instead, the authors designed a new preconditioner
-      based on the data available during the \gls{nem} iterations. Special
-      attention is also paid to ensure the preconditioner can be solved using
-      the \gls{tdma} and \gls{adi} methods. These methods are among the fastest
-      numerical matrix solution techniques available. The authors incorporate
-      information in the preconditioner from the \gls{nem} equations,
-      group-to-group scattering, and transverse leakage contributions. The
-      construction of the preconditioner appears to be computationally
-      expensive. Unfortunately, \citeauthor{qe2paper} do not compare their
-      preconditioner to any other preconditioner or even a case without a
-      preconditioner. Therefore, it is impossible to determine the relative
-      computational efficiency of this preconditioning method.
+    An extensive review of the choice of preconditioner in \gls{jfnk}
+    solutions to the multigroup neutron diffusion equation has been presented
+    elsewhere \cite{gill_azmy}. It is expected that the results of the
+    preconditioner study for the multigroup neutron diffusion equation should
+    be applicable to the \gls{nem} equations. Preconditioners investigated
+    include the diffusion operator, incomplete Cholesky factorization, the
+    diffusion-fission operator, and preconditioning with a few \glspl{pi}. The
+    results of the preconditioner study indicates that preconditioning with
+    approximately five \glspl{pi} provided the fastest convergence of the
+    \gls{jfnk} iterations. The incomplete Cholesky preconditioner provided
+    similar convergence rate but requires additional and expensive matrix
+    calculations. A \gls{pi} preconditioner was also investigated in work by
+    \citeauthor{jfnk_wielandt} and similar performance was reported
+    \cite{jfnk_wielandt}.
+
+    The use of a \gls{pi} preconditioner was not investigated by
+    \citeauthor{qe2paper}. Instead, the authors designed a new preconditioner
+    based on the data available during the \gls{nem} iterations. Special
+    attention is also paid to ensure the preconditioner can be solved using
+    the \gls{tdma} and \gls{adi} methods. These methods are among the fastest
+    numerical matrix solution techniques available. The authors incorporate
+    information in the preconditioner from the \gls{nem} equations,
+    group-to-group scattering, and transverse leakage contributions. The
+    construction of the preconditioner appears to be computationally
+    expensive. Unfortunately, \citeauthor{qe2paper} do not compare their
+    preconditioner to any other preconditioner or even a case without a
+    preconditioner. Therefore, it is impossible to determine the relative
+    computational efficiency of this preconditioning method.
 
   \subsection{Convergence Rate Consideration}
 
@@ -266,7 +280,7 @@
     \subsubsection{Convergence of \glsentrylong{pi} Method}
       \label{sec:dominance_ratio}
 
-      The convergence behavior of the \gls{pi} method is known and well studied 
+      The convergence behavior of the \gls{pi} method is known and studied well 
       \cite{nakamura,gehinThesis,my_ms_thesis}. The convergence rate of the
       \gls{pi} method is determined by the first and second largest eigenvalues
       of the equations of interest (either the multigroup neutron diffusion
@@ -305,11 +319,10 @@
       neutron diffusion equation has little effect on the convergence rate when
       the equations are solved using the \gls{jfnk} method \cite{gill_azmy}.
       This is expected as the convergence rate of the \gls{jfnk} method is not
-      related to the eigenvalues of the operator, but instead is related to the
+      related to the eigenvalues of the operator but is related to the
       properties of the Jacobian including its Lipschitz continuity
       \cite{textbookkelley}. These results indicate that the \gls{ws} would have
       little to no effect on the \gls{jfnk} method. However,
       \citeauthor{qe2paper} indicate in their concluding remarks that they
       expect the \gls{ws} to ``improve the efficiency further'' and this is
       inaccurate~\cite{qe2paper}.
-      
