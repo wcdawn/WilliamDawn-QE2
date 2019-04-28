@@ -3,14 +3,14 @@ PRESENTATION=WilliamDawn-QE2-presentation
 INTERMEDIATES=*.aux *.log *.out *.toc *.gls *.glg *.glo *.bbl *.bcf *.blg \
 			  *.run.xml *.acn *.acr *.alg *.ist *.nav *.snm
 
-.PHONY : all presentation
+.PHONY : all presentation forcepresentation clean
 
 all : presentation
 
 presentation : $(PRESENTATION).pdf
 
 $(PRESENTATION).pdf : $(PRESENTATION).tex beamerthemeNCSU.sty\
-	../WilliamDawn-QE2.bib
+	./*.tex ../WilliamDawn-QE2.bib ../acronym.tex ../variable_definitions.tex
 	pdflatex --draftmode --shell-escape $(PRESENTATION)
 	biber $(PRESENTATION)
 	makeglossaries $(PRESENTATION)
