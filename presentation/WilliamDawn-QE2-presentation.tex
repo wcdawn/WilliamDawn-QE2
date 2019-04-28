@@ -66,6 +66,7 @@
 \glstocfalse
 \renewcommand{\glossarysection}[2][]{}
 
+\input{../variable_definitions}
 
 % Information to be included in the title page:
 \title[Ph.D. Qualifying Exam Part 2]
@@ -103,10 +104,12 @@
 \end{frame}
 
 \begin{frame}[allowframebreaks]{References}
+  \nocite{*}
   \printbibliography[heading=none]
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Acronyms}
+  \glsaddall
   % this width could potentially allow text to flow off the page... 
   % but just don't do that...
   \setlength{\glsdescwidth}{0.8\textwidth}
