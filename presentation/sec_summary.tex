@@ -1,2 +1,176 @@
 \section{Summary}
 \label{sec:summary}
+
+\begin{frame}{Multigroup Neutron Diffusion Equation}
+    \begin{equation}
+      \label{eq:multigroup_diffusion}
+      \grad \cdot \current_g(\vr) + \Sigma_{r,g}(\vr) \phi_g(\vr)= 
+        \frac{\chi_g(\vr)}{\lambda} 
+        \sum_{g'=1}^{G} \nu\Sigma_{f,g'}(\vr) \phi_{g'}(\vr) + 
+        \sum_{\substack{g'=1 \\ g' \ne g}}^{G} 
+        \Sigma_{s,g' \rightarrow g}(\vr) \phi_{g'}(\vr)
+    \end{equation}
+    \vspace{-2\baselineskip}
+    \begin{conditions} % custom environment designed for this purpose
+      \vr & spatial position vector, \\
+      \current_g(\vr) & net neutron current for energy group $g$ 
+        \units{$\frac{1}{\text{cm}^2 \; \text{s}}$}, \\
+      \phi_g(\vr) & 
+        \parbox[t]{\columnwidth}{fundamental eigenvector,  \\
+        scalar neutron flux for energy group $g$
+        \units{$\frac{1}{\text{cm}^2 \; \text{s}}$},} \\
+      \Sigma_{r,g}(\vr) & macroscopic removal cross section for energy group $g$ 
+        \units{$\frac{1}{\text{cm}}$}, \\
+      \chi_g(\vr) & fission spectrum for energy group $g$,\\
+      \lambda & 
+        \parbox[t]{\columnwidth}{fundamental eigenvalue, \\
+        effective neutron multiplication factor,} \\
+      \nu \Sigma_{f,g}(\vr) & 
+        \parbox[t]{\columnwidth}{number of fission neutrons times macroscopic
+        fission \\
+        cross section in energy group $g$ \units{$\frac{1}{\text{cm}}$},} \\
+      \Sigma_{s,g' \rightarrow g} (\vr) & 
+        \parbox[t]{\columnwidth}{macroscopic scatter cross section from
+        energy group $g'$ to \\
+        energy group $g$ \units{$\frac{1}{\text{cm}}$},} \\
+      G & total number of energy groups.
+    \end{conditions}
+\end{frame}
+
+\begin{frame}{\glsentryshort{nem} Equations}
+  Transverse integrated multigroup neutron diffusion equation. \\
+  Note: node indices $i,j,k$ have been omitted.
+  \begin{align}
+    \label{eq:transverse_multigroup_diffusion}
+    \frac{d \current_{g,u} (u)}{d u} + \overline{\Sigma_{r,g}}
+      \phi_{g,u}(r) &= Q_{g,u}(u) - L_{g,u}(u) \\
+    \label{eq:current_approximation}
+    \current_{g,u}(u) &= - \overline{D_g} \, \frac{d \phi_{g,u}(u)}{du}
+  \end{align}
+  \vspace{-\baselineskip}
+  \begin{conditions}
+    u          & coordinate direction $u = x,y,z$, \\
+    \overline{D_g} & average value of diffusion coefficient in node $i,j,k$, \\
+    \overline{\Sigma_{r,g}} & average value of $\Sigma_{r,g}(\vr)$ in node $i,j,k$, \\
+    Q_{g,u}(u) & transverse integrated neutron source, \\
+    L_{g,u}(u) & transverse leakage.
+  \end{conditions}
+\end{frame}
+
+\begin{frame}{\glsentryshort{nem} Projections}
+  Basis functions are typically polynomials.\\
+  \citeauthor{qe2paper} select Legendre polynomials.
+  \begin{align}
+    \label{eq:flux_expansion}
+    \phi_{g,u}(u) &= \sum_{n=0}^{N_{\phi} = 4} a_{g,u,n} \, f_{u,n}(u), \\
+    \label{eq:source_expansion}
+    Q_{g,u}(u)    &= \sum_{n=0}^{N_Q = 2}      q_{g,u,n} \, f_{u,n}(u), \\
+    \label{eq:leakage_expansion}
+    L_{g,u}(u)    &= \sum_{n=0}^{N_L = 2}      l_{g,u,n} \, f_{u,n}(u),
+  \end{align}
+  \vspace{-\baselineskip}
+  \begin{conditions}
+    a_{g,u,n} & expansion coefficient of $\phi_{g,u}(u)$, \\
+    q_{g,u,n} & expansion coefficient of $Q_{g,u}(u)$, \\
+    l_{g,u,n} & expansion coefficient of $L_{g,u}(u)$, \\
+    f_{u,n}(u) & $n^{th}$ Legendre polynomial.
+  \end{conditions}
+\end{frame}
+
+\begin{frame}{Local Elimination}
+  \begin{itemize}
+    \item Odd and even coefficients can be solve separately \cite{gehinThesis}.
+    \item \citeauthor{qe2paper} show $a_{g,u,1}$ and $a_{g,u,3}$ can be written
+      in terms of each other.
+    \item $a_{g,u,1-3}$ and $a_{g,u,2-4}$ are introduced.
+    \item Solution vector, $\Phi_g$ is length $10 \times N \times G$.
+  \end{itemize}
+  \begin{equation}
+    \label{eq:solution_vector}
+    \vPhi_g =
+    \begin{pmatrix}
+      \current_{g,x,+} \\
+      \current_{g,y,+} \\
+      \vspace{8pt}
+      \current_{g,z,+} \\
+      \overline{\phi_g} \\
+      a_{g,x,1-2} \\
+      a_{g,y,1-2} \\
+      a_{g,z,1-2} \\
+      a_{g,x,2-4} \\
+      a_{g,y,2-4} \\
+      a_{g,z,2-4}
+    \end{pmatrix}
+  \end{equation}
+\end{frame}
+
+\begin{frame}{\glsentryshort{jfnk} Theory}
+  The $m^{th}$ Newton step.
+  \begin{equation}
+    \label{eq:newton_step}
+    \jacobian (\vx^m) \cdot \step^m = - \residual(\vx^m)
+  \end{equation}
+  The step proceeds.
+  \begin{equation}
+    \vx^{m+1} = \vx^{m} + \step^{m}.
+  \end{equation}
+\end{frame}
+
+\begin{frame}{Inexact Newton Condition}
+  The Newton step is solved with a Krylov. \\
+  \glsentryshort{gmres} and \glsentryshort{bicgstab} are both investigated.
+  \begin{equation}
+    \label{eq:inexact_newton_condition}
+    \| \residual(\vx^m) + \jacobian(\vx^m) \cdot \step^m \| \le 
+      \eta_m \| \residual(\vx^m) \|
+  \end{equation}
+  The Krylov solver does not require an explicit Jacobian, only the
+  Jacobian-vector product which can be approximated with finite differences.
+  \begin{equation}
+    \label{eq:dirder}
+    \jacobian(\vx^m) \cdot \vv \approx \frac{\residual(\vx^m + \epsilon \vv) - 
+      \residual(\vx^m)}{\epsilon}
+  \end{equation}
+  Typically, $\epsilon = \sqrt{\epsilon_{mach}} \approx 10^{-8}$.
+\end{frame}
+
+\begin{frame}{Choice of Physics-Based Preconditioner}
+  \begin{equation}
+    \label{eq:left_precondition}
+    \| \mm_L^{-1} \residual(\vx^m) + \mm_L^{-1} \left( \jacobian(\vx^m)
+      \cdot \step^m \right) \| \le \eta_m \| \mm_L^{-1} \residual(\vx^m) \|
+  \end{equation}
+  \begin{itemize}
+    \item Preconditioner should approximate the Jacobian inverse
+      \cite{textbookkelley}.
+    \item \citeauthor{gill_azmy} investigate several choices of preconditioner
+      and conclude that preconditioning with $\approx 5$~\glspl{pi} is ideal.
+    \item \citeauthor{jfnk_wielandt} present similar results.
+    \item \citeauthor{qe2paper} develop a preconditioner based on available
+      data.
+    \item Solved using \gls{tdma} and then \gls{adi}.
+    \item No preconditioner comparison provided.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Convergence Rates of \glsentryshort{jfnk} and \glsentryshort{pi}
+  Methods}
+  \begin{itemize}
+    \item \gls{pi}.
+    \begin{itemize}
+      \item Converges linearly at a rate determined by the dominance ratio
+        \cite{nakamura}.
+      \item $d = \frac{\lambda_1}{\lambda_0}$.
+      \item Typically, $d > 0.95$ is common and the \gls{ws} is used (to be 
+        discussed) \cite{gehinThesis}.
+    \end{itemize}
+    \item \gls{jfnk}.
+    \begin{itemize}
+      \item Convergence rate determined by Jacobian properties (e.g. Lipschitz
+        constant) \cite{textbookkelley}.
+      \item Not affected by dominance ratio \cite{gill_azmy}.
+      \item Will not be affected by \gls{ws} despite claim of
+        \citeauthor{qe2paper}.
+    \end{itemize}
+  \end{itemize}
+\end{frame}

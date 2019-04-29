@@ -1,2 +1,30 @@
-\section{Conclusion}
+\section{Conclusions and Implications}
 \label{sec:conclusion}
+
+\begin{frame}{Multiphysics \glsentryshort{jfnk}}
+  \begin{itemize}
+    \item \citeauthor{qe2paper} claim their method will be extended to include
+      multiphysics feedback.
+    \item \citeauthor{caslJFNK} present results for multiphysics \gls{jfnk}.
+    \item It was concluded that cross section processing was prohibitively
+      inefficient.
+    \item Required reactor-specific cross section derivatives.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Proposed Future Investigations}
+  \begin{itemize}
+    \item Compare proposed \gls{jfnk} implementation to a \gls{pi} method with
+      the \gls{ws}.
+    \item Investigate other preconditioners including \gls{pi} preconditioner.
+    \item Implement a \gls{cmfd} formulation to reduce the number of solving
+      variables.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion}
+  \centering
+  \Large
+  When comparing algorithm efficiency, it is crucial to compare optimized
+  computer programs.
+\end{frame}
