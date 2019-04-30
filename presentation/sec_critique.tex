@@ -17,7 +17,7 @@
       desired such that $\lambda = 1.0$.
     \item Current algorithm is linked to the \gls{pi} method.
     \item May be extendable to the \gls{jfnk} method or may be too inefficient
-      to undo any efficiency improvements.
+      and undo any efficiency improvements.
   \end{itemize}
 \end{frame}
 
@@ -44,8 +44,8 @@
 
 \begin{frame}{Ragged Core}
   \begin{itemize}
-    \item After performing local elimination, 18\% of the solution variables are
-      still unnecessary.
+    \item After performing local elimination, 18\% of solution variables in
+      \gls{iaea} 3D \gls{pwr} benchmark are unnecessary.
     \item This may bias results and penalize the \gls{pi} method
       \cite{gehinThesis}.
   \end{itemize}
