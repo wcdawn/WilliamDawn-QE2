@@ -160,9 +160,17 @@
     \begin{itemize}
       \item Converges linearly at a rate determined by the dominance ratio
         \cite{nakamura}.
-      \item $d = \frac{\lambda_1}{\lambda_0}$.
+      \begin{equation}
+        d = \frac{\lambda_1}{\lambda_0}
+      \end{equation}
       \item Typically, $d > 0.95$ is common and the \gls{ws} is used (to be 
         discussed) \cite{gehinThesis}.
+      \begin{equation}
+        d' = \frac{\frac{1}{\lambda_0} - \frac{1}{\lambda'}}
+          {\frac{1}{\lambda_1} - \frac{1}{\lambda'}}
+      \end{equation}
+      % if \lambda_0 = 1.0, \lambda_1 = 0.95, \lambda' = \lambda_0 + 0.03
+      % d = 0.95, d' = 0.35625
     \end{itemize}
     \item \gls{jfnk}.
     \begin{itemize}
