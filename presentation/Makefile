@@ -1,7 +1,8 @@
 # Makefile
 PRESENTATION=WilliamDawn-QE2-presentation
-INTERMEDIATES=*.aux *.log *.out *.toc *.gls *.glg *.glo *.bbl *.bcf *.blg \
-			  *.run.xml *.acn *.acr *.alg *.ist *.nav *.snm
+PRESENTATION_INTERMEDIATES=*.aux *.log *.out *.toc *.gls *.glg *.glo *.bbl \
+						   *.bcf *.blg *.run.xml *.acn *.acr *.alg *.ist *.nav \
+						   *.snm
 
 .PHONY : all presentation forcepresentation clean
 
