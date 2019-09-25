@@ -1,4 +1,4 @@
-function [flux, keff, x, k_conv_plot, x_conv_plot] = ...
+function [flux, keff, x, k_conv_plot, x_conv_plot, time_plot] = ...
     jfnk(A, xs, tol, maxit)
 
 %     D1 = xs.D1;
@@ -30,6 +30,7 @@ function [flux, keff, x, k_conv_plot, x_conv_plot] = ...
 
     k_conv_plot = [];
     x_conv_plot = [];
+    time_plot = [];
 
     tic;
 
@@ -67,6 +68,9 @@ function [flux, keff, x, k_conv_plot, x_conv_plot] = ...
         fprintf('it=%5d, keff=%.6f, kconv=%.6e, conv=%.6e\n',m,keff,kconv,conv);
         k_conv_plot = [k_conv_plot, kconv];
         x_conv_plot = [x_conv_plot, conv];
+
+        jfnk_it_time = toc;
+        time_plot = [time_plot, jfnk_it_time];
 
         if (conv < tol)
             break

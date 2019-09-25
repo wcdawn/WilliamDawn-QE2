@@ -229,8 +229,8 @@ xs.nusf2 = nusf2;
 xs.sigma_r1 = sigma_r1;
 xs.sigma_r2 = sigma_r2;
 
-[flux, keff, x, k_conv_plot, pi_conv] = power_iteration(A, xs, maxout, epspow, epsk);
-[flux, keff, x, k_conv_plot, jfnk_conv] = jfnk(A, xs, epspow, maxout);
+[flux, keff, x, k_conv_plot, pi_conv, pi_time] = power_iteration(A, xs, maxout, epspow, epsk);
+[flux, keff, x, k_conv_plot, jfnk_conv, jfnk_time] = jfnk(A, xs, epspow, maxout);
 
 figure
 semilogy(pi_conv,'-*');
@@ -239,6 +239,15 @@ semilogy(jfnk_conv,'-*');
 hold off
 legend({'Power Iteration','JFNK'});
 xlabel('Iteration');
+ylabel('Convergence Criteria');
+
+figure
+semilogy(pi_time, pi_conv, '-*');
+hold on
+semilogy(jfnk_time, jfnk_conv, '-*');
+hold off
+legend({'Power Iteration','JFNK'});
+xlabel('Wall Time [s]');
 ylabel('Convergence Criteria');
 
 if (length(k_conv_plot) == maxout)

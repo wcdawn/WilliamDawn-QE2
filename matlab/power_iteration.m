@@ -1,4 +1,4 @@
-function [flux, keff, x, k_conv_plot, x_conv_plot] = ...
+function [flux, keff, x, k_conv_plot, x_conv_plot, time_plot] = ...
     power_iteration(A, xs, maxout, epspow, epsk)
 
     [L, U] = lu(A);
@@ -28,6 +28,7 @@ function [flux, keff, x, k_conv_plot, x_conv_plot] = ...
     fission_sum_old = 1.0;
     k_conv_plot = [];
     x_conv_plot = [];
+    time_plot = [];
 
     for it = 1:maxout
 
@@ -62,6 +63,9 @@ function [flux, keff, x, k_conv_plot, x_conv_plot] = ...
 %         x_conv_plot = [x_conv_plot, tolx];
         x_conv_plot = [x_conv_plot, ...
             norm(residfun(A, xs, [x;keff], keff_old, fission_sum_old),2)];
+
+        power_it_time = toc;
+        time_plot = [time_plot, power_it_time];
 
         if ((tolx <= epspow) && (tolk <= epsk)) 
             fprintf('Terminated Successfully\n');
